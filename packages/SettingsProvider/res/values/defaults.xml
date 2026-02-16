@@ -150,6 +150,14 @@
     <!-- Default for Settings.Secure.USER_SETUP_COMPLETE -->
     <bool name="def_user_setup_complete">false</bool>
 
+    <!-- Default for Settings.Secure.AUTOFILL_SERVICE -->
+    <string name="def_autofill_service" translatable="false">
+        com.google.android.gms/.autofill.service.AutofillService
+    </string>
+
+    <!-- Default for Settings.Secure.AUTOFILL_ENABLED -->
+    <bool name="def_autofill_enabled">true</bool>
+
     <!-- Default for Settings.Global.LOW_BATTERY_SOUND_TIMEOUT.
          0 means no timeout; battery sounds will always play
          >0 is milliseconds of screen-off time after which battery sounds will not play -->
