@@ -258,17 +258,22 @@ public class PersistentDataBlockManager {
     }
 
     /**
-     * Returns true if FactoryResetProtection (FRP) is active, meaning the device rebooted and has
-     * not been able to deactivate FRP because the deactivation secrets were wiped by an untrusted
-     * factory reset.
-     */
-    public boolean isFactoryResetProtectionActive() {
-        try {
-            return sService.isFactoryResetProtectionActive();
-        } catch (RemoteException e) {
-            throw e.rethrowFromSystemServer();
-        }
+ * Returns true if FactoryResetProtection (FRP) is active, meaning the device rebooted and has
+ * not been able to deactivate FRP because the deactivation secrets were wiped by an untrusted
+ * factory reset.
+ */
+public boolean isFactoryResetProtectionActive() {
+    // PATCH: Always return false to bypass FRP check in SetupWizard
+    return false;
+    
+    /* Original code - commented out
+    try {
+        return sService.isFactoryResetProtectionActive();
+    } catch (RemoteException e) {
+        throw e.rethrowFromSystemServer();
     }
+    */
+}
 
     /**
      * Attempt to deactivate FRP with the provided secret.  If the provided secret matches the
