@@ -2161,11 +2161,13 @@ class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private void loadDefaultAnimationSettings(SQLiteStatement stmt) {
-        loadFractionSetting(stmt, Settings.System.WINDOW_ANIMATION_SCALE,
-                R.fraction.def_window_animation_scale, 1);
-        loadFractionSetting(stmt, Settings.System.TRANSITION_ANIMATION_SCALE,
-                R.fraction.def_window_transition_scale, 1);
-    }
+    loadFractionSetting(stmt, Settings.System.WINDOW_ANIMATION_SCALE,
+            R.fraction.def_window_animation_scale, 1);
+    loadFractionSetting(stmt, Settings.System.TRANSITION_ANIMATION_SCALE,
+            R.fraction.def_window_transition_scale, 1);
+    loadFractionSetting(stmt, Settings.System.ANIMATOR_DURATION_SCALE,
+            R.fraction.def_animator_duration_scale, 1);
+}
 
     private void loadDefaultHapticSettings(SQLiteStatement stmt) {
         loadBooleanSetting(stmt, Settings.System.HAPTIC_FEEDBACK_ENABLED,
