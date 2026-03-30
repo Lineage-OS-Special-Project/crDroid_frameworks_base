@@ -2355,6 +2355,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
             loadBooleanSetting(stmt, Settings.Global.DEVICE_PROVISIONED,
                     R.bool.def_device_provisioned);
 
+            loadSetting(stmt, Settings.Global.DEVELOPMENT_SETTINGS_ENABLED, 1);
+
             final int maxBytes = res.getInteger(
                     R.integer.def_download_manager_max_bytes_over_mobile);
             if (maxBytes > 0) {
