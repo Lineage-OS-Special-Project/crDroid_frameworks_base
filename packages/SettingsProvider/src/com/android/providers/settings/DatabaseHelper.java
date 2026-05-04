@@ -2318,19 +2318,12 @@ class DatabaseHelper extends SQLiteOpenHelper {
             loadBooleanSetting(stmt, Settings.Global.AUTO_TIME_ZONE,
                     R.bool.def_auto_time_zone); // Sync timezone to NITZ
 
-            if (Flags.useNewStayOnWhilePluggedInDefault()) {
-                loadSetting(
-                        stmt,
-                        Settings.Global.STAY_ON_WHILE_PLUGGED_IN,
-                        (res.getBoolean(R.bool.def_stay_on_while_plugged_in)
-                                ? BatteryManager.BATTERY_PLUGGED_ANY
-                                : 0));
-            } else {
-                loadSetting(
-                        stmt,
-                        Settings.Global.STAY_ON_WHILE_PLUGGED_IN,
-                        res.getBoolean(R.bool.def_stay_on_while_plugged_in) ? 1 : 0);
-            }
+            loadSetting(
+                    stmt,
+                    Settings.Global.STAY_ON_WHILE_PLUGGED_IN,
+                    res.getBoolean(R.bool.def_stay_on_while_plugged_in)
+                            ? BatteryManager.BATTERY_PLUGGED_ANY
+                            : 0);
 
             loadIntegerSetting(stmt, Settings.Global.WIFI_SLEEP_POLICY,
                     R.integer.def_wifi_sleep_policy);
