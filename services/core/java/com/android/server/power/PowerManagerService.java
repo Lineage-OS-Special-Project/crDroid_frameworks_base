@@ -3395,11 +3395,18 @@ public final class PowerManagerService extends SystemService
                                         keyboardBrightness : BRIGHTNESS_OFF_FLOAT);
                             }
                         }
-                    } else {
+                      } else {
                         groupNextTimeout = lastUserActivityTime + screenOffTimeout;
                         if (now < groupNextTimeout) {
-                            groupUserActivitySummary = USER_ACTIVITY_SCREEN_DIM;
-                            if (wakefulness == WAKEFULNESS_AWAKE) {
+                            final boolean stayAwakeWhilePlugged = mStayOn
+                                    || (powerGroup.getWakeLockSummaryLocked()
+                                            & WAKE_LOCK_STAY_AWAKE) != 0;
+
+                            groupUserActivitySummary = stayAwakeWhilePlugged
+                                    ? USER_ACTIVITY_SCREEN_BRIGHT
+                                    : USER_ACTIVITY_SCREEN_DIM;
+
+                            if (!stayAwakeWhilePlugged && wakefulness == WAKEFULNESS_AWAKE) {
                                 if (mButtonsLight != null) {
                                     mButtonsLight.setBrightness(BRIGHTNESS_OFF_FLOAT);
                                     powerGroup.setButtonOnLocked(false);
@@ -3648,9 +3655,7 @@ public final class PowerManagerService extends SystemService
 
     @GuardedBy("mLock")
     private long getScreenDimDurationLocked(long screenOffTimeout) {
-        return Math.min(mScreenTimeoutConstants.getMaximumScreenDimDurationConfig(),
-                (long) (screenOffTimeout
-                        * mScreenTimeoutConstants.getMaximumScreenDimRatioConfig()));
+        return 0;
     }
 
     @VisibleForTesting
