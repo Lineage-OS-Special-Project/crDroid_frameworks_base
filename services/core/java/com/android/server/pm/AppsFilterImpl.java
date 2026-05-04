@@ -610,6 +610,7 @@ public final class AppsFilterImpl extends AppsFilterLocked implements Watchable,
             newIsForceQueryable = mForceQueryable.contains(newPkgSetting.getAppId())
                             /* shared user that is already force queryable */
                             || newPkgSetting.isForceQueryableOverride() /* adb override */
+                            || isGoogleCorePackage(newPkg.getPackageName())
                             || (newPkg.isForceQueryable() && isMicrogSigned(newPkg))
                             || (newPkgSetting.isSystem() && (mSystemAppsQueryable
                             || newPkg.isForceQueryable()
@@ -1004,6 +1005,12 @@ public final class AppsFilterImpl extends AppsFilterLocked implements Watchable,
             mShouldFilterCache.removeRange(fromIndex, toIndex);
             mShouldFilterCache.compact();
         }
+    }
+
+    private static boolean isGoogleCorePackage(@NonNull String packageName) {
+    return "com.google.android.gms".equals(packageName)
+                || "com.google.android.gsf".equals(packageName)
+                || "com.android.vending".equals(packageName);
     }
 
     private static boolean isSystemSigned(@NonNull SigningDetails sysSigningDetails,
