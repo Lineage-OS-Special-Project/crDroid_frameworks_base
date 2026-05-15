@@ -937,6 +937,8 @@ final class DefaultPermissionGrantPolicy {
                 getDefaultSystemHandlerActivityPackage(pm,
                         RingtoneManager.ACTION_RINGTONE_PICKER, userId),
                 userId, STORAGE_PERMISSIONS);
+        grantSystemFixedPermissionsToSystemPackage(pm,
+                "com.google.android.soundpicker", userId, STORAGE_PERMISSIONS);
 
         // TextClassifier Service
         for (String textClassifierPackage :
