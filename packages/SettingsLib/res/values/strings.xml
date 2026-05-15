@@ -617,7 +617,7 @@
     <!-- Development settings -->
     <skip/>
     <!-- Development Settings.  the title for the item to take the user to Development settings.  Development settings are settings meant for application developers.  -->
-    <string name="development_settings_title">Developer options</string>
+    <string name="development_settings_title">Development settings</string>
     <!-- Development settings enable title. -->
     <string name="development_settings_enable">Enable developer options</string>
     <!-- Development Settings summary.  The summary of the item to take the user to Development settings.  Development settings are settings meant for application developers. -->
