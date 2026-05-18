@@ -17,6 +17,7 @@
  */
 -->
 <resources>
+    <string name="def_call_screening_default_component" translatable="false">com.google.android.dialer/com.android.dialer.externals.androidapis.telecom.callscreeningservice.DialerCallScreeningService</string>
     <bool name="def_dim_screen">true</bool>
     <integer name="def_screen_off_timeout">60000</integer>
     <integer name="def_sleep_timeout">-1</integer>
@@ -361,4 +362,6 @@
         devices without forcing it on other form factors.
     -->
     <bool name="def_text_show_password"></bool>
+    <string name="def_dialer_default_application" translatable="false">com.google.android.dialer</string>
+    <string name="def_sms_default_application" translatable="false">com.google.android.apps.messaging</string>
 </resources>

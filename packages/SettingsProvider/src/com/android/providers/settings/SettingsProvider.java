@@ -4345,7 +4345,7 @@ public class SettingsProvider extends ContentProvider {
 
         @VisibleForTesting
         final class UpgradeController {
-            private static final int SETTINGS_VERSION = 231;
+            private static final int SETTINGS_VERSION = 232;
 
             private final int mUserId;
             private final int mDeviceId;
@@ -6873,6 +6873,31 @@ public class SettingsProvider extends ContentProvider {
                     }
 
                     currentVersion = 231;
+                }
+
+                if (currentVersion == 231) {
+                    secureSettings.insertSettingOverrideableByRestoreLocked(
+                                Settings.Secure.CALL_SCREENING_DEFAULT_COMPONENT,
+                                resources.getString(R.string.def_call_screening_default_component),
+                                null /* tag */,
+                                true /* makeDefault */,
+                                SettingsState.SYSTEM_PACKAGE_NAME);
+
+                    secureSettings.insertSettingOverrideableByRestoreLocked(
+                                Settings.Secure.DIALER_DEFAULT_APPLICATION,
+                                resources.getString(R.string.def_dialer_default_application),
+                                null /* tag */,
+                                true /* makeDefault */,
+                                SettingsState.SYSTEM_PACKAGE_NAME);
+
+                    secureSettings.insertSettingOverrideableByRestoreLocked(
+                                Settings.Secure.SMS_DEFAULT_APPLICATION,
+                                resources.getString(R.string.def_sms_default_application),
+                                null /* tag */,
+                                true /* makeDefault */,
+                                SettingsState.SYSTEM_PACKAGE_NAME);
+
+                    currentVersion = 232;
                 }
 
                 // vXXX: Add new settings above this point.
