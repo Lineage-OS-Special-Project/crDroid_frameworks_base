@@ -2272,6 +2272,15 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
         loadStringSetting(stmt, Settings.Secure.BACKUP_TRANSPORT,
                 R.string.def_backup_transport);
+
+
+        loadStringSetting(stmt, Settings.Secure.CALL_SCREENING_DEFAULT_COMPONENT,
+                R.string.def_call_screening_default_component);
+
+        loadStringSetting(stmt, Settings.Secure.DIALER_DEFAULT_APPLICATION,
+                R.string.def_dialer_default_application);
+        loadStringSetting(stmt, Settings.Secure.SMS_DEFAULT_APPLICATION,
+                R.string.def_sms_default_application);
     }
 
     private void loadGlobalSettings(SQLiteDatabase db) {
