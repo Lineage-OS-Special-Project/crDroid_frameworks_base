@@ -1491,6 +1491,8 @@ public class NetworkPolicyManagerService extends INetworkPolicyManager.Stub {
                     if (!hasInternetPermissionUL(uid) && !isSystemApp(uid)) {
                         Slog.i(TAG, "ACTION_PACKAGE_ADDED for uid=" + uid + ", no INTERNET");
                         addUidPolicy(uid, POLICY_REJECT_ALL);
+                    } else {
+                        removeUidPolicy(uid, POLICY_REJECT_ALL);
                     }
                     updateRestrictionRulesForUidUL(uid);
                 }
