@@ -17,6 +17,7 @@
 package com.android.systemui.navigationbar;
 
 import static android.content.Intent.ACTION_OVERLAY_CHANGED;
+import static android.view.WindowManagerPolicyConstants.NAV_BAR_MODE_GESTURAL_OVERLAY;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -124,11 +125,35 @@ public class NavigationModeController implements Dumpable {
                 if (DEBUG) {
                     Log.d(TAG, "onOverlayChanged");
                 }
+                if (isUserSetupComplete()) {
+                    setDefaultGesturalNavigationOverlay();
+                }
                 updateCurrentInteractionMode(true /* notify */);
             }
         });
 
+        if (isUserSetupComplete()) {
+            setDefaultGesturalNavigationOverlay();
+        }
         updateCurrentInteractionMode(false /* notify */);
+    }
+
+    private void setDefaultGesturalNavigationOverlay() {
+        try {
+            mOverlayManager.setEnabledExclusive(
+                    NAV_BAR_MODE_GESTURAL_OVERLAY,
+                    true,
+                    mUserTracker.getUserId());
+        } catch (RemoteException | IllegalStateException | SecurityException e) {
+            Log.w(TAG, "Failed to enable default gestural navigation overlay", e);
+        }
+    }
+
+    private boolean isUserSetupComplete() {
+        return Settings.Secure.getInt(
+                mCurrentUserContext.getContentResolver(),
+                Settings.Secure.USER_SETUP_COMPLETE,
+                0) == 1;
     }
 
     public void updateCurrentInteractionMode(boolean notify) {
