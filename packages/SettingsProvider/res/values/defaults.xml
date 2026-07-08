@@ -364,4 +364,7 @@
     <bool name="def_text_show_password"></bool>
     <string name="def_dialer_default_application" translatable="false">com.google.android.dialer</string>
     <string name="def_sms_default_application" translatable="false">com.google.android.apps.messaging</string>
+
+    <!-- Default Quick Settings panel style (0 = Card, 1 = Classic) -->
+    <integer name="def_qs_panel_style">1</integer>
 </resources>
