@@ -34,6 +34,7 @@ import android.hardware.usb.UsbManager;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.os.ParcelFileDescriptor;
 import android.os.RemoteCallbackList;
@@ -232,42 +233,53 @@ public class AdbService extends IAdbManager.Stub {
      * SystemServer}.
      */
     public void systemReady() {
-        Slog.d(TAG, "systemReady");
+    Slog.d(TAG, "systemReady");
 
-        /*
-         * Use the normal bootmode persistent prop to maintain state of adb across
-         * all boot modes.
-         */
-        mIsAdbUsbEnabled =
-                containsFunction(
-                        SystemProperties.get(USB_PERSISTENT_CONFIG_PROPERTY, ""),
-                        UsbManager.USB_FUNCTION_ADB);
-        boolean shouldEnableAdbUsb =
-                mIsAdbUsbEnabled
-                        || SystemProperties.getBoolean(
-                                TestHarnessModeService.TEST_HARNESS_MODE_PROPERTY, false);
-        mIsAdbWifiEnabled = "1".equals(SystemProperties.get(WIFI_PERSISTENT_CONFIG_PROPERTY, "0"));
+    // Determine the actual USB ADB state.
+    mIsAdbUsbEnabled =
+            containsFunction(
+                    SystemProperties.get(USB_PERSISTENT_CONFIG_PROPERTY, ""),
+                    UsbManager.USB_FUNCTION_ADB);
 
-        // make sure the ADB_ENABLED setting value matches the current state
-        try {
-            Settings.Global.putInt(
-                    mContentResolver, Settings.Global.ADB_ENABLED, shouldEnableAdbUsb ? 1 : 0);
-            Settings.Global.putInt(
-                    mContentResolver, Settings.Global.ADB_WIFI_ENABLED, mIsAdbWifiEnabled ? 1 : 0);
-        } catch (SecurityException e) {
-            // If UserManager.DISALLOW_DEBUGGING_FEATURES is on, that this setting can't be changed.
-            Slog.d(TAG, "ADB_ENABLED is restricted.");
-        }
+    mIsAdbWifiEnabled =
+            "1".equals(SystemProperties.get(WIFI_PERSISTENT_CONFIG_PROPERTY, "0"));
+
+    // Automatically enable USB debugging on debuggable LOSP builds while
+    // preserving the existing persistent and Test Harness behaviours.
+    final boolean shouldEnableAdbUsb =
+                Build.IS_DEBUGGABLE
+                            || mIsAdbUsbEnabled
+                            || SystemProperties.getBoolean(
+                                        TestHarnessModeService.TEST_HARNESS_MODE_PROPERTY, false);
+
+    // Make sure the ADB_ENABLED setting value matches the desired state.
+    try {
+        Settings.Global.putInt(
+                mContentResolver,
+                Settings.Global.ADB_ENABLED,
+                shouldEnableAdbUsb ? 1 : 0);
+        Settings.Global.putInt(
+                mContentResolver,
+                Settings.Global.ADB_WIFI_ENABLED,
+                mIsAdbWifiEnabled ? 1 : 0);
+    } catch (SecurityException e) {
+        // If UserManager.DISALLOW_DEBUGGING_FEATURES is on, this setting can't be changed.
+        Slog.d(TAG, "ADB_ENABLED is restricted.");
     }
 
-    /**
-     * Called in response to {@code SystemService.PHASE_BOOT_COMPLETED} from {@code SystemServer}.
-     */
-    public void bootCompleted() {
-        Slog.d(TAG, "boot completed");
-        mDebuggingManager.setAdbEnabled(mIsAdbUsbEnabled, AdbTransportType.USB);
-        mDebuggingManager.setAdbEnabled(mIsAdbWifiEnabled, AdbTransportType.WIFI);
-    }
+    // Explicitly request USB ADB in case the setting was already enabled
+    // and therefore did not generate a ContentObserver state transition.
+    setAdbEnabled(shouldEnableAdbUsb, AdbTransportType.USB);
+}
+
+/**
+ * Called in response to {@code SystemService.PHASE_BOOT_COMPLETED} from {@code SystemServer}.
+ */
+public void bootCompleted() {
+    Slog.d(TAG, "boot completed");
+    mDebuggingManager.setAdbEnabled(mIsAdbUsbEnabled, AdbTransportType.USB);
+    mDebuggingManager.setAdbEnabled(mIsAdbWifiEnabled, AdbTransportType.WIFI);
+}
 
     @Override
     public void allowDebugging(boolean alwaysAllow, @NonNull String publicKey) {
