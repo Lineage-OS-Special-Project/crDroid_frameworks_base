@@ -34,6 +34,7 @@ import android.hardware.usb.UsbManager;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.os.ParcelFileDescriptor;
 import android.os.RemoteCallbackList;
@@ -106,6 +107,14 @@ public class AdbService extends IAdbManager.Stub {
         @Override
         public void registerTransport(IAdbTransport transport) {
             mTransports.put(transport.asBinder(), transport);
+            // A transport may register after systemReady() made the initial ADB decision.
+            // Replay the current state so USB function composition cannot miss that decision.
+            try {
+                transport.onAdbEnabled(mIsAdbUsbEnabled, AdbTransportType.USB);
+            } catch (RemoteException e) {
+                mTransports.remove(transport.asBinder());
+                Slog.w(TAG, "Unable to send initial ADB state to transport " + transport, e);
+            }
         }
 
         @Override
@@ -212,7 +221,7 @@ public class AdbService extends IAdbManager.Stub {
     private final ContentResolver mContentResolver;
     private final ArrayMap<IBinder, IAdbTransport> mTransports = new ArrayMap<>();
 
-    private boolean mIsAdbUsbEnabled;
+    private volatile boolean mIsAdbUsbEnabled;
     private boolean mIsAdbWifiEnabled;
     private final AdbDebuggingManager mDebuggingManager;
 
@@ -234,30 +243,43 @@ public class AdbService extends IAdbManager.Stub {
     public void systemReady() {
         Slog.d(TAG, "systemReady");
 
-        /*
-         * Use the normal bootmode persistent prop to maintain state of adb across
-         * all boot modes.
-         */
+        // Determine the actual USB ADB state.
         mIsAdbUsbEnabled =
                 containsFunction(
                         SystemProperties.get(USB_PERSISTENT_CONFIG_PROPERTY, ""),
                         UsbManager.USB_FUNCTION_ADB);
-        boolean shouldEnableAdbUsb =
-                mIsAdbUsbEnabled
+
+        mIsAdbWifiEnabled =
+                "1".equals(SystemProperties.get(WIFI_PERSISTENT_CONFIG_PROPERTY, "0"));
+
+        // Automatically enable USB debugging on debuggable LOSP builds while preserving the
+        // existing persistent and Test Harness behaviours. Store the desired state immediately
+        // so late transport registration and bootCompleted() observe the same value.
+        final boolean shouldEnableAdbUsb =
+                Build.IS_DEBUGGABLE
+                        || mIsAdbUsbEnabled
                         || SystemProperties.getBoolean(
                                 TestHarnessModeService.TEST_HARNESS_MODE_PROPERTY, false);
-        mIsAdbWifiEnabled = "1".equals(SystemProperties.get(WIFI_PERSISTENT_CONFIG_PROPERTY, "0"));
+        mIsAdbUsbEnabled = shouldEnableAdbUsb;
 
-        // make sure the ADB_ENABLED setting value matches the current state
+        // Make sure the ADB_ENABLED setting value matches the desired state.
         try {
             Settings.Global.putInt(
-                    mContentResolver, Settings.Global.ADB_ENABLED, shouldEnableAdbUsb ? 1 : 0);
+                    mContentResolver,
+                    Settings.Global.ADB_ENABLED,
+                    shouldEnableAdbUsb ? 1 : 0);
             Settings.Global.putInt(
-                    mContentResolver, Settings.Global.ADB_WIFI_ENABLED, mIsAdbWifiEnabled ? 1 : 0);
+                    mContentResolver,
+                    Settings.Global.ADB_WIFI_ENABLED,
+                    mIsAdbWifiEnabled ? 1 : 0);
         } catch (SecurityException e) {
-            // If UserManager.DISALLOW_DEBUGGING_FEATURES is on, that this setting can't be changed.
+            // If UserManager.DISALLOW_DEBUGGING_FEATURES is on, this setting can't be changed.
             Slog.d(TAG, "ADB_ENABLED is restricted.");
         }
+
+        // Explicitly apply USB ADB even if the state already matched the persistent property.
+        // The state was assigned above, so force the transport/debugging-manager notification.
+        setAdbEnabled(shouldEnableAdbUsb, AdbTransportType.USB, true);
     }
 
     /**
@@ -419,13 +441,18 @@ public class AdbService extends IAdbManager.Stub {
     }
 
     private void setAdbEnabled(boolean enable, byte transportType) {
+        setAdbEnabled(enable, transportType, false);
+    }
+
+    private void setAdbEnabled(boolean enable, byte transportType, boolean force) {
         FgThread.getHandler()
                 .sendMessage(
                         obtainMessage(
                                 AdbService::setAdbEnabledDoNotCallDirectly,
                                 this,
                                 enable,
-                                transportType));
+                                transportType,
+                                force));
     }
 
     static void enableADBdWifi() {
@@ -438,7 +465,8 @@ public class AdbService extends IAdbManager.Stub {
         SystemProperties.set(WIFI_PERSISTENT_CONFIG_PROPERTY, "0");
     }
 
-    private void setAdbEnabledDoNotCallDirectly(boolean enable, byte transportType) {
+    private void setAdbEnabledDoNotCallDirectly(
+            boolean enable, byte transportType, boolean force) {
         Slog.d(
                 TAG,
                 "setAdbEnabled("
@@ -450,9 +478,11 @@ public class AdbService extends IAdbManager.Stub {
                         + ", transportType="
                         + transportType);
 
+        boolean stateChanged;
         switch (transportType) {
             case AdbTransportType.USB:
-                if (enable == mIsAdbUsbEnabled) {
+                stateChanged = enable != mIsAdbUsbEnabled;
+                if (!stateChanged && !force) {
                     return;
                 }
                 mIsAdbUsbEnabled = enable;
@@ -461,6 +491,7 @@ public class AdbService extends IAdbManager.Stub {
                 if (enable == mIsAdbWifiEnabled) {
                     return;
                 }
+                stateChanged = true;
                 mIsAdbWifiEnabled = enable;
                 if (mIsAdbWifiEnabled) {
                     // Start adb over WiFi.
@@ -480,10 +511,12 @@ public class AdbService extends IAdbManager.Stub {
                 return;
         }
 
-        if (enable) {
-            startAdbd();
-        } else {
-            stopAdbd();
+        if (stateChanged || force) {
+            if (enable) {
+                startAdbd();
+            } else {
+                stopAdbd();
+            }
         }
 
         for (IAdbTransport transport : mTransports.values()) {
