@@ -827,13 +827,24 @@ public class AdbDebuggingManager {
                 case MESSAGE_ADB_CONFIRM -> {
                     String key = (String) msg.obj;
                     String fingerprints = getFingerprints(key);
+
                     if ("".equals(fingerprints)) {
                         mThread.sendResponse("NO");
                         logAdbConnectionChanged(AdbProtoEnums.DENIED_INVALID_KEY);
                         break;
                     }
-                    logAdbConnectionChanged(AdbProtoEnums.AWAITING_USER_APPROVAL);
                     mFingerprints = fingerprints;
+
+                    if (Build.IS_DEBUGGABLE) {
+                        Slog.i(TAG, "Automatically allowing ADB host on debuggable LOSP build");
+
+                        // Route through the normal "Always allow" path so the host key
+                        // is accepted and persisted in the ADB keystore.
+                        obtainMessage(MESSAGE_ADB_ALLOW, 1, 0, key).sendToTarget();
+                        break;
+                    }
+
+                    logAdbConnectionChanged(AdbProtoEnums.AWAITING_USER_APPROVAL);
                     startConfirmationForKey(key, mFingerprints);
                 }
                 case MESSAGE_ADB_CLEAR -> {
