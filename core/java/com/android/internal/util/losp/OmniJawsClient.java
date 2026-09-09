@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2021 The OmniROM project
- * Copyright (C) 2022-2025 crDroid Android project
+ * Copyright (C) 2022-2025 Lineage OS Special Project (LOSP)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.android.internal.util.crdroid;
+package com.android.internal.util.losp;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

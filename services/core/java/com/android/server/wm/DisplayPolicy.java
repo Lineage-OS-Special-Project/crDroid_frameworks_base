@@ -140,7 +140,7 @@ import com.android.internal.policy.ForceShowNavBarSettingsObserver;
 import com.android.internal.policy.GestureNavigationSettingsObserver;
 import com.android.internal.protolog.ProtoLog;
 import com.android.internal.statusbar.LetterboxDetails;
-import com.android.internal.util.crdroid.Utils;
+import com.android.internal.util.losp.Utils;
 import com.android.internal.util.function.TriFunction;
 import com.android.internal.view.AppearanceRegion;
 import com.android.internal.widget.PointerLocationView;

@@ -25,7 +25,7 @@ import android.service.quicksettings.Tile;
 import androidx.annotation.Nullable;
 
 import com.android.systemui.animation.Expandable;
-import com.android.systemui.crdroid.onthego.OnTheGoService;
+import com.android.systemui.losp.onthego.OnTheGoService;
 import com.android.systemui.dagger.qualifiers.Background;
 import com.android.systemui.dagger.qualifiers.Main;
 import com.android.systemui.plugins.ActivityStarter;
@@ -40,7 +40,7 @@ import com.android.systemui.res.R;
 
 import com.android.internal.logging.MetricsLogger;
 import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
-import com.android.internal.util.crdroid.OnTheGoUtils;
+import com.android.internal.util.losp.OnTheGoUtils;
 
 import javax.inject.Inject;
 
@@ -91,7 +91,7 @@ public class OnTheGoTile extends QSTileImpl<BooleanState> {
     @Override
     protected void handleClick(@Nullable Expandable expandable) {
         ComponentName cn = new ComponentName("com.android.systemui",
-                "com.android.systemui.crdroid.onthego.OnTheGoService");
+                "com.android.systemui.losp.onthego.OnTheGoService");
         Intent startIntent = new Intent();
         startIntent.setComponent(cn);
         if (isOnTheGoEnabled()) {
@@ -129,6 +129,6 @@ public class OnTheGoTile extends QSTileImpl<BooleanState> {
 
     @Override
     public int getMetricsCategory() {
-        return MetricsEvent.CRDROID_SETTINGS;
+        return MetricsEvent.LOSP_MODCENTER;
     }
 }
