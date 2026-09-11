@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2014 The NamelessRom Project
- *           (C) 2025 crDroid Android Project
+ *           (C) 2025 LOSP Android Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.android.systemui.crdroid.onthego;
+package com.android.systemui.losp.onthego;
 
 import android.Manifest;
 import android.app.Notification;
@@ -59,7 +59,7 @@ import androidx.annotation.NonNull;
 
 import com.android.systemui.res.R;
 
-import com.android.internal.util.crdroid.OnTheGoUtils;
+import com.android.internal.util.losp.OnTheGoUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -541,7 +541,7 @@ public class OnTheGoService extends Service {
 
         if (type == 1 || type == 2) {
             final ComponentName cn = new ComponentName("com.android.systemui",
-                    "com.android.systemui.crdroid.onthego.OnTheGoService");
+                    "com.android.systemui.losp.onthego.OnTheGoService");
             final Intent startIntent = new Intent();
             startIntent.setComponent(cn);
             startIntent.setAction(ACTION_START);
