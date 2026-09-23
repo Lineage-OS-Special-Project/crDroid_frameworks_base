@@ -371,7 +371,7 @@ public abstract class AppsFilterBase implements AppsFilterSnapshot {
     private static boolean isRomPackage(@NonNull String packageName) {
         return packageName.startsWith("org.lineageos.")
                 || packageName.startsWith("com.libremobileos.")
-                || packageName.startsWith("com.crdroid.")
+                || packageName.startsWith("com.losp.")
                 || packageName.startsWith("com.android.axion.")
                 || packageName.startsWith("co.aospa.")
                 || packageName.startsWith("io.chaldeaprjkt.")

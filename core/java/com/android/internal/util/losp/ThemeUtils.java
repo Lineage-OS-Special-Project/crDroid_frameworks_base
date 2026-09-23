@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.internal.util.crdroid;
+package com.android.internal.util.losp;
 
 import static android.os.UserHandle.USER_SYSTEM;
 

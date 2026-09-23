@@ -126,7 +126,7 @@ import java.util.Set;
 import java.util.concurrent.Executor;
 import java.util.function.Consumer;
 
-import com.android.internal.util.crdroid.DeviceConfigUtils;
+import com.android.internal.util.losp.DeviceConfigUtils;
 
 /**
  * The Settings provider contains global system-level device preferences.

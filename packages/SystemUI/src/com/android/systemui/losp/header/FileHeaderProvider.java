@@ -16,7 +16,7 @@
  *
  */
 
-package com.android.systemui.crdroid.header;
+package com.android.systemui.losp.header;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -35,7 +35,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Calendar;
 
-import com.android.internal.util.crdroid.ImageHelper;
+import com.android.internal.util.losp.ImageHelper;
 import com.android.systemui.res.R;
 
 public class FileHeaderProvider implements

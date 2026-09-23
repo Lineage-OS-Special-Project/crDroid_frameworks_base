@@ -601,7 +601,7 @@
 
         <!-- started from PhoneWindowManager -->
         <service
-            android:name=".crdroid.onthego.OnTheGoService"
+            android:name=".losp.onthego.OnTheGoService"
             android:foregroundServiceType="camera"
             android:exported="true" />
 

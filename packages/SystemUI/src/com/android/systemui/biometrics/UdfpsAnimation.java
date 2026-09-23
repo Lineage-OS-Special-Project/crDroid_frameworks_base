@@ -64,7 +64,7 @@ public class UdfpsAnimation extends ImageView {
     private final int mMaxBurnInOffsetX;
     private final int mMaxBurnInOffsetY;
 
-    private static final String UDFPS_ANIMATIONS_PACKAGE = "com.crdroid.udfps.animations";
+    private static final String UDFPS_ANIMATIONS_PACKAGE = "com.losp.udfps.animations";
 
     private final KeyguardStateController mKeyguardStateController;
     private final AuthController mAuthController;

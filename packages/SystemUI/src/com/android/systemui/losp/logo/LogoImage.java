@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2025 crDroid Android Project
+ * Copyright (C) 2018-2025 Lineage OS Special Project (LOSP)
  * Copyright (C) 2018-2019 AICP
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.android.systemui.crdroid.logo;
+package com.android.systemui.losp.logo;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -119,7 +119,7 @@ public abstract class LogoImage extends ImageView implements DarkReceiver {
         switch (mLogoStyle) {
             case 0:
             default:
-                drawable = mContext.getResources().getDrawable(R.drawable.ic_crdroid_logo);
+                drawable = mContext.getResources().getDrawable(R.drawable.ic_losp_logo);
                 break;
             case 1:
                 drawable = mContext.getResources().getDrawable(R.drawable.ic_android_logo);
