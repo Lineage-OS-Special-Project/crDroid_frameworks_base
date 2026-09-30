@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2017-2018 Benzo Rom
- *           (C) 2017-2025 crDroidAndroid Project
+ *           (C) 2017-2025 LOSPAndroid Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -135,7 +135,7 @@ public class CPUInfoTile extends QSTileImpl<BooleanState> {
 
     @Override
     public int getMetricsCategory() {
-        return MetricsEvent.CRDROID_SETTINGS;
+        return MetricsEvent.LOSP_MODCENTER;
     }
 
     @Override

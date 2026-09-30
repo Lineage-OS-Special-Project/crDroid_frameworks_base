@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2025 crDroid Android Project
+ * Copyright (C) 2018-2025 Lineage OS Special Project (LOSP)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ import javax.net.ssl.HttpsURLConnection;
  */
 public final class PastyUtils {
     private static final String TAG = "PastyUtils";
-    private static final String BASE_URL = "https://paste.crdroid.net";
+    private static final String BASE_URL = "https://paste.losp.net";
     private static final String API_URL = String.format("%s/documents", BASE_URL);
     private static Handler handler;
 
