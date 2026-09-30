@@ -883,8 +883,8 @@ public class UdfpsController implements DozeReceiver, Dumpable {
 
         mDisableSmartPixels = mContext.getResources().getBoolean(com.android.systemui.res.R.bool.config_disableSmartPixelsOnUDFPS);
 
-        if (com.android.internal.util.crdroid.Utils.isPackageInstalled(mContext,
-                "com.crdroid.udfps.animations")) {
+        if (com.android.internal.util.losp.Utils.isPackageInstalled(mContext,
+                "com.losp.udfps.animations")) {
             updateUdfpsAnimation();
             mConfigurationController.addCallback(mConfigurationListener);
         }

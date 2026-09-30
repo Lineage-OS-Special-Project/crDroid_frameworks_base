@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019-2025 crDroid Android Project
+ * Copyright (C) 2019-2025 Lineage OS Special Project (LOSP)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -186,7 +186,7 @@ public class CompassTile extends QSTileImpl<BooleanState> implements SensorEvent
 
     @Override
     public int getMetricsCategory() {
-        return MetricsEvent.CRDROID_SETTINGS;
+        return MetricsEvent.LOSP_MODCENTER;
     }
 
     @Override
