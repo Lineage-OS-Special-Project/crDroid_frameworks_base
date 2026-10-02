@@ -79,7 +79,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class MediaRouter {
     private static final String TAG = "MediaRouter";
     private static final boolean DEBUG = Log.isLoggable(TAG, Log.DEBUG);
-    private static final boolean DEBUG_RESTORE_ROUTE = true;
+    private static final boolean DEBUG_RESTORE_ROUTE = false;
 
     static class Static implements DisplayManager.DisplayListener {
         final String mPackageName;

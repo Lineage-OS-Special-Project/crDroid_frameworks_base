@@ -76,7 +76,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class SystemSensorManager extends SensorManager {
     //TODO: disable extra logging before release
-    private static final boolean DEBUG_DYNAMIC_SENSOR = true;
+    private static final boolean DEBUG_DYNAMIC_SENSOR = false;
     private static final int MIN_DIRECT_CHANNEL_BUFFER_SIZE = 104;
     private static final int MAX_LISTENER_COUNT = 128;
     private static final int CAPPED_SAMPLING_PERIOD_US = 5000;
