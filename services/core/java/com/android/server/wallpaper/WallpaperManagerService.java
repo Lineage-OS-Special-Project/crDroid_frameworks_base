@@ -165,7 +165,7 @@ public class WallpaperManagerService extends IWallpaperManager.Stub
         implements IWallpaperManagerService {
     private static final String TAG = "WallpaperManagerService";
     private static final boolean DEBUG = false;
-    private static final boolean DEBUG_LIVE = true;
+    private static final boolean DEBUG_LIVE = false;
 
     private static final @NonNull RectF LOCAL_COLOR_BOUNDS =
             new RectF(0, 0, 1, 1);

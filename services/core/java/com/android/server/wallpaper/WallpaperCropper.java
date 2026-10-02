@@ -66,7 +66,7 @@ public class WallpaperCropper {
 
     private static final String TAG = WallpaperCropper.class.getSimpleName();
     private static final boolean DEBUG = false;
-    private static final boolean DEBUG_CROP = true;
+    private static final boolean DEBUG_CROP = false;
 
     /**
      * Maximum acceptable parallax.
@@ -783,8 +783,10 @@ public class WallpaperCropper {
                                     ? RECORD_FILE : RECORD_LOCK_FILE);
                     final File record = new File(getWallpaperDir(wallpaper.userId), recordName);
                     record.createNewFile();
-                    Slog.v(TAG, "record path =" + record.getPath()
-                            + ", record name =" + record.getName());
+                    if (DEBUG_CROP) {
+                        Slog.v(TAG, "record path =" + record.getPath()
+                                + ", record name =" + record.getName());
+                    }
 
                     final ImageDecoder.Source srcData =
                             ImageDecoder.createSource(wallpaper.getWallpaperFile());

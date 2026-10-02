@@ -70,7 +70,7 @@ class PresetController(
             hapClientProfile?.registerCallback(executor, remoteCallback)
         } catch (e: IllegalArgumentException) {
             // The callback was already registered
-            Log.i(TAG, "Skip registering the callback, ${e.message}")
+            if (DEBUG) Log.d(TAG, "Skip registering the callback, ${e.message}")
         }
     }
 
@@ -82,7 +82,7 @@ class PresetController(
             hapClientProfile?.unregisterCallback(remoteCallback)
         } catch (e: IllegalArgumentException) {
             // The callback was never registered or was already unregistered
-            Log.w(TAG, "Cannot unregister callback, ${e.message}")
+            if (DEBUG) Log.d(TAG, "Cannot unregister callback, ${e.message}")
         }
     }
 
@@ -263,7 +263,7 @@ class PresetController(
     }
 
     companion object {
-        private const val DEBUG = true
+        private const val DEBUG = false
         private const val TAG = "PresetController"
     }
 }

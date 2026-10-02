@@ -569,7 +569,7 @@ sp<ReportFile> WorkDirectory::createReportFile() {
 status_t WorkDirectory::getReports(vector<sp<ReportFile>>* result, int64_t after) {
     unique_lock<mutex> lock(mLock);
 
-    const bool DBG = true;
+    const bool DBG = false;
 
     if (DBG) {
         ALOGD("WorkDirectory::getReports");
@@ -872,4 +872,3 @@ void get_args_from_report(IncidentReportArgs* out, const ReportFileProto_Report&
 }  // namespace incidentd
 }  // namespace os
 }  // namespace android
-

@@ -72,7 +72,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.withContext
 
 private const val TAG = "MediaDataManager"
-private const val DEBUG = true
+private const val DEBUG = false
 
 private val LOADING =
     MediaData(
@@ -319,7 +319,7 @@ class LegacyMediaDataManagerImpl(
                 try {
                     context.packageManager.getApplicationInfo(packageName, 0)?.uid!!
                 } catch (e: PackageManager.NameNotFoundException) {
-                    Log.w(TAG, "Could not get app UID for $packageName", e)
+                    if (DEBUG) Log.d(TAG, "Could not get app UID for $packageName", e)
                     Process.INVALID_UID
                 }
 
@@ -380,7 +380,7 @@ class LegacyMediaDataManagerImpl(
             val lastActive = getActiveTimestamp(systemClock)
             val result = mediaDataLoader.get().loadMediaData(key, sbn, isConvertingToActive)
             if (result == null) {
-                Log.d(TAG, "No result from loadMediaData")
+                if (DEBUG) Log.d(TAG, "No result from loadMediaData")
                 return@withContext
             }
 
@@ -610,7 +610,7 @@ class LegacyMediaDataManagerImpl(
                         packageName,
                     )
             if (result == null || desc.title.isNullOrBlank()) {
-                Log.d(TAG, "No MediaData result for resumption")
+                if (DEBUG) Log.d(TAG, "No MediaData result for resumption")
                 mediaEntries.remove(packageName)
                 return@withContext
             }
@@ -800,7 +800,7 @@ class LegacyMediaDataManagerImpl(
         val pkg = data.packageName
         val migrate = mediaEntries.put(pkg, updated) == null
         // Notify listeners of "new" controls when migrating or removed and update when not
-        Log.d(TAG, "migrating? $migrate from $key -> $pkg")
+        if (DEBUG) Log.d(TAG, "migrating? $migrate from $key -> $pkg")
         if (migrate) {
             notifyMediaDataLoaded(key = pkg, oldKey = key, info = updated)
         } else {
@@ -823,7 +823,7 @@ class LegacyMediaDataManagerImpl(
                 .sortedBy { (key, data) -> data.lastActive }
                 .subList(0, numResume - ResumeMediaBrowser.MAX_RESUMPTION_CONTROLS)
                 .forEach { (key, data) ->
-                    Log.d(TAG, "Removing excess control $key")
+                    if (DEBUG) Log.d(TAG, "Removing excess control $key")
                     mediaEntries.remove(key)
                     notifyMediaDataRemoved(key)
                     logger.logMediaRemoved(data.appUid, data.packageName, data.instanceId)

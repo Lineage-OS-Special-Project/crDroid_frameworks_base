@@ -61,7 +61,7 @@ public class AmbientVolumeUiController implements
         AmbientVolumeController.AmbientVolumeControlCallback,
         AmbientVolumeUi.AmbientVolumeUiListener, BluetoothCallback, CachedBluetoothDevice.Callback {
 
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
     private static final String TAG = "AmbientVolumeUiController";
 
     private final Context mContext;
