@@ -24,7 +24,6 @@ import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.annotation.PermissionManuallyEnforced;
 import android.annotation.RequiresNoPermission;
-import android.annotation.SuppressLint;
 import android.content.AttributionSource;
 import android.media.AudioAttributes;
 import android.media.AudioDeviceInfo;
@@ -61,8 +60,7 @@ import java.util.Objects;
 public final class AudioModeSession extends IAudioModeSession.Stub {
     private static final String TAG = "AudioModeSession";
 
-    @SuppressLint("DebugTrue")
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     private static final AudioAttributes CALL_AUDIO_ATTRIBUTES = new AudioAttributes.Builder()
             .setUsage(AudioAttributes.USAGE_VOICE_COMMUNICATION)

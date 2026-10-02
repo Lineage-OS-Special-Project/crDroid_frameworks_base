@@ -118,8 +118,7 @@ import java.util.Set;
 public class MediaSessionService extends SystemService implements Monitor {
     private static final String TAG = "MediaSessionService";
     static final boolean DEBUG = Log.isLoggable(TAG, Log.DEBUG);
-    // Leave log for key event always.
-    static final boolean DEBUG_KEY_EVENT = true;
+    static final boolean DEBUG_KEY_EVENT = DEBUG;
 
     private static final int WAKELOCK_TIMEOUT = 5000;
     private static final int MEDIA_KEY_LISTENER_TIMEOUT = 1000;

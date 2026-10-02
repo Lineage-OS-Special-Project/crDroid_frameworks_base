@@ -338,7 +338,7 @@ class PresetUiController(
     }
 
     companion object {
-        private const val DEBUG = true
+        private const val DEBUG = false
         private const val TAG = "PresetUiController"
     }
 }

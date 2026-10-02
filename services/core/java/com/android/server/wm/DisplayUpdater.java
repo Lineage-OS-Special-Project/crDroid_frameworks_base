@@ -44,7 +44,7 @@ class DisplayUpdater {
 
     // TODO: b/448471638 - disable by default after rolling out to nextfood
     // Verbose logging is currently enabled to debug potential issues during development
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     private static final String TAG = "DisplayUpdater";
 
