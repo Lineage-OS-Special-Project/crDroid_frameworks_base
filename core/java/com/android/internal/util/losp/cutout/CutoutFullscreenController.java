@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.android.internal.util.crdroid.cutout;
+package com.android.internal.util.losp.cutout;
 
 import android.content.ContentResolver;
 import android.content.Context;
