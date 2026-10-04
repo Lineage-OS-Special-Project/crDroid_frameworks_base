@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2014 The NamelessRom Project
- *           (C) 2026 crDroid Android Project
+ *           (C) 2026 LOSP Android Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.android.systemui.crdroid.onthego;
+package com.android.systemui.losp.onthego;
 
 import android.app.Dialog;
 import android.content.ContentResolver;
@@ -40,7 +40,7 @@ import android.widget.TextView;
 
 import com.android.systemui.res.R;
 
-import com.android.internal.util.crdroid.OnTheGoUtils;
+import com.android.internal.util.losp.OnTheGoUtils;
 
 public class OnTheGoDialog extends Dialog {
 

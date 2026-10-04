@@ -31,7 +31,7 @@ import com.android.systemui.keyguard.ui.viewmodel.AlternateBouncerUdfpsIconViewM
 import com.android.systemui.lifecycle.repeatWhenAttached
 import com.android.systemui.scene.shared.flag.SceneContainerFlag
 import com.android.systemui.tuner.TunerService
-import com.android.internal.util.crdroid.Utils
+import com.android.internal.util.losp.Utils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.StateFlow
@@ -52,7 +52,7 @@ object AlternateBouncerUdfpsViewBinder {
         val bgView = view.bgView
 
         val packageInstalled = Utils.isPackageInstalled(
-            view.context, "com.crdroid.udfps.icons"
+            view.context, "com.losp.udfps.icons"
         )
 
         val shouldUseCustomUdfpsIcon: StateFlow<Boolean> = callbackFlow {
