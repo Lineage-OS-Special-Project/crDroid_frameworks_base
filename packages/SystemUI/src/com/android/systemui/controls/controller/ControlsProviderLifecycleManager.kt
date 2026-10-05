@@ -22,6 +22,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Binder
+import android.os.Build;
 import android.os.Bundle
 import android.os.IBinder
 import android.os.UserHandle
@@ -79,7 +80,7 @@ class ControlsProviderLifecycleManager(
 
     companion object {
         private const val LOAD_TIMEOUT_SECONDS = 20L // seconds
-        private const val DEBUG = true
+        private val DEBUG = Build.TYPE == "eng"
         private val BIND_FLAGS = Context.BIND_AUTO_CREATE or Context.BIND_FOREGROUND_SERVICE or
             Context.BIND_NOT_PERCEPTIBLE
         // Use BIND_NOT_PERCEPTIBLE so it will be at lower priority from SystemUI.

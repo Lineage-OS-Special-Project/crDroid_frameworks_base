@@ -26,6 +26,7 @@ import android.content.IntentFilter;
 import android.content.om.IOverlayManager;
 import android.content.pm.PackageManager;
 import android.content.res.ApkAssets;
+import android.os.Build;
 import android.os.PatternMatcher;
 import android.os.RemoteException;
 import android.os.ServiceManager;
@@ -58,7 +59,7 @@ import javax.inject.Inject;
 public class NavigationModeController implements Dumpable {
 
     private static final String TAG = NavigationModeController.class.getSimpleName();
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = "eng".equals(Build.TYPE);
 
     public interface ModeChangedListener {
         void onNavigationModeChanged(int mode);

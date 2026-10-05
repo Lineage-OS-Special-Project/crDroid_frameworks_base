@@ -23,6 +23,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.ContentObserver;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
 import android.os.UserHandle;
 import android.provider.Settings;
@@ -51,7 +52,7 @@ import java.util.concurrent.Executor;
  */
 public class HearingDeviceLocalDataManager {
     private static final String TAG = "HearingDeviceDataMgr";
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = "eng".equals(Build.TYPE);
 
     /** Interface for listening hearing device local data changed */
     public interface OnDeviceLocalDataChangeListener {

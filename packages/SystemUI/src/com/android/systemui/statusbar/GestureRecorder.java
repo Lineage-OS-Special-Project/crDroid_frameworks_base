@@ -16,6 +16,7 @@
 
 package com.android.systemui.statusbar;
 
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
@@ -33,7 +34,7 @@ import java.util.LinkedList;
  * Convenience class for capturing gestures for later analysis.
  */
 public class GestureRecorder {
-    public static final boolean DEBUG = true; // for now
+    public static final boolean DEBUG = "eng".equals(Build.TYPE); // for now
     public static final String TAG = GestureRecorder.class.getSimpleName();
 
     public class Gesture {

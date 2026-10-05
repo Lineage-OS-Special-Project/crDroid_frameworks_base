@@ -31,6 +31,7 @@ import static com.android.settingslib.bluetooth.hearingdevices.ui.ExpandableCont
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
+import android.os.Build;
 import android.util.ArraySet;
 import android.util.Log;
 import android.widget.Toast;
@@ -61,7 +62,7 @@ public class AmbientVolumeUiController implements
         AmbientVolumeController.AmbientVolumeControlCallback,
         AmbientVolumeUi.AmbientVolumeUiListener, BluetoothCallback, CachedBluetoothDevice.Callback {
 
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = "eng".equals(Build.TYPE);
     private static final String TAG = "AmbientVolumeUiController";
 
     private final Context mContext;

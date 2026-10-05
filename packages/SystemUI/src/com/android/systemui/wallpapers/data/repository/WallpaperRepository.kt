@@ -25,6 +25,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.PointF
 import android.graphics.RectF
+import android.os.Build;
 import android.os.Bundle
 import android.os.UserHandle
 import android.provider.Settings
@@ -239,6 +240,6 @@ constructor(
 
     companion object {
         private val TAG = WallpaperRepositoryImpl::class.simpleName
-        private val DEBUG = true
+        private val DEBUG = Build.TYPE == "eng"
     }
 }

@@ -28,6 +28,7 @@ import android.media.MediaDescription
 import android.media.session.MediaController
 import android.media.session.MediaSession
 import android.media.session.PlaybackState
+import android.os.Build
 import android.os.Process
 import android.os.UserHandle
 import android.service.notification.StatusBarNotification
@@ -72,7 +73,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.withContext
 
 private const val TAG = "MediaDataManager"
-private const val DEBUG = true
+private val DEBUG = Build.TYPE == "eng"
 
 private val LOADING =
     MediaData(
@@ -319,7 +320,7 @@ class LegacyMediaDataManagerImpl(
                 try {
                     context.packageManager.getApplicationInfo(packageName, 0)?.uid!!
                 } catch (e: PackageManager.NameNotFoundException) {
-                    Log.w(TAG, "Could not get app UID for $packageName", e)
+                    if (DEBUG) Log.d(TAG, "Could not get app UID for $packageName", e)
                     Process.INVALID_UID
                 }
 
