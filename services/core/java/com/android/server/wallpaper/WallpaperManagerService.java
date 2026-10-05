@@ -91,6 +91,7 @@ import android.hardware.display.DisplayManager;
 import android.hardware.display.DisplayManager.DisplayListener;
 import android.multiuser.Flags;
 import android.os.Binder;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.FileObserver;
 import android.os.FileUtils;
@@ -165,7 +166,7 @@ public class WallpaperManagerService extends IWallpaperManager.Stub
         implements IWallpaperManagerService {
     private static final String TAG = "WallpaperManagerService";
     private static final boolean DEBUG = false;
-    private static final boolean DEBUG_LIVE = true;
+    private static final boolean DEBUG_LIVE = "eng".equals(Build.TYPE);
 
     private static final @NonNull RectF LOCAL_COLOR_BOUNDS =
             new RectF(0, 0, 1, 1);

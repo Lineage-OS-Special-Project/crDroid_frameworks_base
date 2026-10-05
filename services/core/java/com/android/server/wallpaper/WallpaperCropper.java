@@ -37,6 +37,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.ImageDecoder;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.os.Build;
 import android.os.FileUtils;
 import android.os.SELinux;
 import android.text.TextUtils;
@@ -66,7 +67,7 @@ public class WallpaperCropper {
 
     private static final String TAG = WallpaperCropper.class.getSimpleName();
     private static final boolean DEBUG = false;
-    private static final boolean DEBUG_CROP = true;
+    private static final boolean DEBUG_CROP = "eng".equals(Build.TYPE);
 
     /**
      * Maximum acceptable parallax.
@@ -783,8 +784,10 @@ public class WallpaperCropper {
                                     ? RECORD_FILE : RECORD_LOCK_FILE);
                     final File record = new File(getWallpaperDir(wallpaper.userId), recordName);
                     record.createNewFile();
-                    Slog.v(TAG, "record path =" + record.getPath()
-                            + ", record name =" + record.getName());
+                    if (DEBUG_CROP) {
+                        Slog.v(TAG, "record path =" + record.getPath()
+                                + ", record name =" + record.getName());
+                    }
 
                     final ImageDecoder.Source srcData =
                             ImageDecoder.createSource(wallpaper.getWallpaperFile());

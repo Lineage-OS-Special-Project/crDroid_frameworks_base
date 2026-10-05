@@ -24,6 +24,7 @@ import android.media.RoutingChangeInfo.ENTRY_POINT_SYSTEM_MEDIA_CONTROLS
 import android.media.RoutingSessionInfo
 import android.media.session.MediaController
 import android.media.session.MediaController.PlaybackInfo
+import android.os.Build;
 import android.util.Log
 import androidx.annotation.AnyThread
 import androidx.annotation.MainThread
@@ -59,7 +60,7 @@ import javax.inject.Inject
 
 private const val PLAYBACK_TYPE_UNKNOWN = 0
 private const val TAG = "MediaDeviceManager"
-private const val DEBUG = true
+private val DEBUG = Build.TYPE == "eng"
 
 /** Provides information about the route (ie. device) where playback is occurring. */
 class MediaDeviceManager

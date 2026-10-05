@@ -22,6 +22,7 @@ import android.bluetooth.BluetoothDevice.BOND_BONDED
 import android.bluetooth.BluetoothHapPresetInfo
 import android.bluetooth.BluetoothProfile
 import android.content.Context
+import android.os.Build;
 import android.util.Log
 import android.widget.Toast
 import com.android.settingslib.R
@@ -319,7 +320,7 @@ class PresetUiController(
     }
 
     companion object {
-        private const val DEBUG = true
+        private val DEBUG = Build.TYPE == "eng"
         private const val TAG = "PresetUiController"
     }
 }
