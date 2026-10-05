@@ -357,7 +357,6 @@ public class HearingDeviceLocalDataManager {
         @Override
         public void onChange(boolean selfChange, @Nullable Uri uri) {
             if (mAmbientVolumeUri.equals(uri)) {
-                Log.v(TAG, "Local data on change, manager: " + HearingDeviceLocalDataManager.this);
                 getLocalDataFromSettings();
             }
         }

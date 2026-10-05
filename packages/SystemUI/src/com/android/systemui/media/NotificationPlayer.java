@@ -225,7 +225,6 @@ public class NotificationPlayer implements OnCompletionListener, OnErrorListener
             mPlayer = null;
         }
         if (mp == null) {
-            Log.w(mTag, "STOP command without a player");
             return;
         }
 
