@@ -26,6 +26,7 @@ import android.bluetooth.BluetoothCsipSetCoordinator;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
+import android.os.Build;
 import android.os.ParcelUuid;
 import android.util.Log;
 
@@ -42,7 +43,7 @@ import java.util.Map;
  */
 public class CsipSetCoordinatorProfile implements LocalBluetoothProfile {
     private static final String TAG = "CsipSetCoordinatorProfile";
-    private static final boolean VDBG = true;
+    private static final boolean VDBG = Build.IS_ENG;
 
     private Context mContext;
 

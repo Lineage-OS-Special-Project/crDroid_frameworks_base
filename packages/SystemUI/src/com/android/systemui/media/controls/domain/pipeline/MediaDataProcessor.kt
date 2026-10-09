@@ -28,6 +28,7 @@ import android.media.MediaDescription
 import android.media.session.MediaController
 import android.media.session.MediaSession
 import android.media.session.PlaybackState
+import android.os.Build
 import android.os.Process
 import android.os.UserHandle
 import android.service.notification.StatusBarNotification
@@ -74,7 +75,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.withContext
 
 private const val TAG = "MediaDataProcessor"
-private const val DEBUG = true
+private val DEBUG = Build.IS_ENG
 
 /** Processes all media data fields and encapsulates logic for managing media data entries. */
 @SysUISingleton
@@ -482,7 +483,7 @@ class MediaDataProcessor(
                         packageName,
                     )
             if (result == null || desc.title.isNullOrBlank()) {
-                Log.d(TAG, "No MediaData result for resumption")
+                if (DEBUG) Log.d(TAG, "No MediaData result for resumption")
                 mediaDataRepository.removeMediaEntry(packageName)
                 return@withContext
             }
@@ -534,7 +535,7 @@ class MediaDataProcessor(
             val lastActive = getActiveTimestamp(systemClock)
             val result = mediaDataLoader.get().loadMediaData(key, sbn, isConvertingToActive)
             if (result == null) {
-                Log.d(TAG, "No result from loadMediaData")
+                if (DEBUG) Log.d(TAG, "No result from loadMediaData")
                 return@withContext
             }
 
@@ -762,7 +763,7 @@ class MediaDataProcessor(
         val pkg = data.packageName
         val migrate = mediaDataRepository.addMediaEntry(pkg, updated) == null
         // Notify listeners of "new" controls when migrating or removed and update when not
-        Log.d(TAG, "migrating? $migrate from $key -> $pkg")
+        if (DEBUG) Log.d(TAG, "migrating? $migrate from $key -> $pkg")
         if (migrate) {
             notifyMediaDataLoaded(key = pkg, oldKey = key, info = updated)
         } else {
@@ -786,7 +787,7 @@ class MediaDataProcessor(
                 .sortedBy { (_, data) -> data.lastActive }
                 .subList(0, numResume - ResumeMediaBrowser.MAX_RESUMPTION_CONTROLS)
                 .forEach { (key, data) ->
-                    Log.d(TAG, "Removing excess control $key")
+                    if (DEBUG) Log.d(TAG, "Removing excess control $key")
                     mediaDataRepository.removeMediaEntry(key)
                     notifyMediaDataRemoved(key)
                     logger.logMediaRemoved(data.appUid, data.packageName, data.instanceId)

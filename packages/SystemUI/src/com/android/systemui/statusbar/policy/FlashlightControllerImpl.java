@@ -22,6 +22,7 @@ import android.content.pm.PackageManager;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraManager;
+import android.os.Build;
 import android.os.Handler;
 import android.os.UserHandle;
 import android.provider.Settings;
@@ -56,7 +57,7 @@ import javax.inject.Inject;
 public class FlashlightControllerImpl implements FlashlightController {
 
     private static final String TAG = "FlashlightController";
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = Build.IS_ENG;
 
     private static final int DISPATCH_ERROR = 0;
     private static final int DISPATCH_CHANGED = 1;

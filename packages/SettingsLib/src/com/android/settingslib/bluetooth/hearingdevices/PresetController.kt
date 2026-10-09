@@ -21,6 +21,7 @@ import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothHapClient
 import android.bluetooth.BluetoothHapPresetInfo
 import android.bluetooth.BluetoothProfile
+import android.os.Build
 import android.util.Log
 import com.android.settingslib.bluetooth.HapClientProfile
 import com.android.settingslib.bluetooth.LocalBluetoothProfileManager
@@ -275,7 +276,7 @@ class PresetController(
     }
 
     companion object {
-        private const val DEBUG = true
+        private val DEBUG = Build.IS_ENG
         private const val TAG = "PresetController"
     }
 }
