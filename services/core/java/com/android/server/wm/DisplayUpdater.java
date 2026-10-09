@@ -26,6 +26,7 @@ import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.graphics.Rect;
 import android.hardware.display.DisplayManager;
+import android.os.Build;
 import android.util.Slog;
 import android.util.SparseArray;
 import android.view.Display;
@@ -44,7 +45,7 @@ class DisplayUpdater {
 
     // TODO: b/448471638 - disable by default after rolling out to nextfood
     // Verbose logging is currently enabled to debug potential issues during development
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = Build.IS_ENG;
 
     private static final String TAG = "DisplayUpdater";
 
@@ -125,11 +126,10 @@ class DisplayUpdater {
 
     private List<DisplayChange> applyDisplayInfos(Transition transition,
             SparseArray<DisplayInfo> newDisplayInfos) {
-        StringBuilder debugLog;
-        if (DEBUG) {
-            debugLog = new StringBuilder("applyDisplayInfos: applying changes for transition #"
-                    + transition.getSyncId() + ":\n");
-        }
+        final StringBuilder debugLog = DEBUG
+                ? new StringBuilder("applyDisplayInfos: applying changes for transition #"
+                        + transition.getSyncId() + ":\n")
+                : null;
 
         final List<DisplayChange> displayChanges = new ArrayList<>();
         for (int i = 0; i < newDisplayInfos.size(); i++) {
