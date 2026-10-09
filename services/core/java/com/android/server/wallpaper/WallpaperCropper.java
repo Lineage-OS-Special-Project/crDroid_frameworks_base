@@ -37,6 +37,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.ImageDecoder;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.os.Build;
 import android.os.FileUtils;
 import android.os.SELinux;
 import android.text.TextUtils;
@@ -68,7 +69,7 @@ public class WallpaperCropper {
 
     private static final String TAG = WallpaperCropper.class.getSimpleName();
     private static final boolean DEBUG = false;
-    private static final boolean DEBUG_CROP = true;
+    private static final boolean DEBUG_CROP = Build.IS_ENG;
 
     /**
      * Maximum acceptable parallax.
@@ -534,16 +535,20 @@ public class WallpaperCropper {
                 Rect cropRect = new Rect(left, top, left + targetWidth, top + targetHeight);
                 decoder.setCrop(cropRect);
 
-                Slog.i(TAG, "generateDefaultWallpaperCrop: (" + width + "x" + height
-                        + ") -> target: " + targetWidth + "x" + targetHeight
-                        + " scaled: " + scaledWidth + "x" + scaledHeight
-                        + " crop: " + cropRect.toShortString());
+                if (DEBUG_CROP) {
+                    Slog.i(TAG, "generateDefaultWallpaperCrop: (" + width + "x" + height
+                            + ") -> target: " + targetWidth + "x" + targetHeight
+                            + " scaled: " + scaledWidth + "x" + scaledHeight
+                            + " crop: " + cropRect.toShortString());
+                }
             });
 
             if (cropped != null) {
                 cropped.compress(Bitmap.CompressFormat.JPEG, 90, bos);
                 bos.flush();
-                Slog.i(TAG, "generateDefaultWallpaperCrop: Success");
+                if (DEBUG_CROP) {
+                    Slog.i(TAG, "generateDefaultWallpaperCrop: Success");
+                }
             }
         } catch (IOException e) {
             Slog.e(TAG, "Failed to generate default wallpaper crop", e);
@@ -761,8 +766,10 @@ public class WallpaperCropper {
                                     ? RECORD_FILE : RECORD_LOCK_FILE);
                     final File record = new File(getWallpaperDir(wallpaper.userId), recordName);
                     record.createNewFile();
-                    Slog.v(TAG, "record path =" + record.getPath()
-                            + ", record name =" + record.getName());
+                    if (DEBUG_CROP) {
+                        Slog.v(TAG, "record path =" + record.getPath()
+                                + ", record name =" + record.getName());
+                    }
 
                     final ImageDecoder.Source srcData =
                             ImageDecoder.createSource(wallpaper.getWallpaperFile());
