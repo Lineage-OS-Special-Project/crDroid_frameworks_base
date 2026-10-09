@@ -21,6 +21,7 @@ import android.annotation.RequiresPermission;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.SystemClock;
 import android.telephony.TelephonyCallback;
 import android.telephony.TelephonyManager;
@@ -38,7 +39,7 @@ public class GpsNetInitiatedHandler {
 
     private static final String TAG = "GpsNetInitiatedHandler";
 
-    private static final boolean DEBUG = Log.isLoggable(TAG, Log.DEBUG);
+    private static final boolean DEBUG = Build.IS_ENG && Log.isLoggable(TAG, Log.DEBUG);
 
     private final Context mContext;
     private final TelephonyManager mTelephonyManager;

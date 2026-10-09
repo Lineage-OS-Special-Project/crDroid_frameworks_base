@@ -34,6 +34,7 @@ import android.media.AudioDeviceAttributes;
 import android.media.AudioDeviceInfo;
 import android.media.AudioManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.SystemClock;
 import android.provider.DeviceConfig;
 import android.provider.MediaStore;
@@ -74,7 +75,7 @@ public class BluetoothUtils {
     private static final String TAG = "BluetoothUtils";
 
     public static final boolean V = false; // verbose logging
-    public static final boolean D = true; // regular logging
+    public static final boolean D = Build.IS_ENG; // regular logging
 
     public static final int META_INT_ERROR = -1;
     public static final String BT_ADVANCED_HEADER_ENABLED = "bt_advanced_header_enabled";

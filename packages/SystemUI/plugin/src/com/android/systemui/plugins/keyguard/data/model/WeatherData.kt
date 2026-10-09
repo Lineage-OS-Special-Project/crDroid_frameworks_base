@@ -14,6 +14,7 @@
 
 package com.android.systemui.plugins.keyguard.data.model
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -30,7 +31,7 @@ data class WeatherData(
     val touchAction: WeatherTouchAction? = null,
 ) {
     companion object {
-        const val DEBUG = true
+        val DEBUG = Build.IS_ENG
         private const val TAG = "WeatherData"
         @VisibleForTesting const val DESCRIPTION_KEY = "description"
         @VisibleForTesting const val STATE_KEY = "state"

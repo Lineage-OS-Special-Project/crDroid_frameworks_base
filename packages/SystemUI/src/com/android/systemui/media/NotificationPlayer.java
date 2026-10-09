@@ -24,6 +24,7 @@ import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnErrorListener;
 import android.media.PlayerBase;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Looper;
 import android.os.PowerManager;
 import android.os.SystemClock;
@@ -43,7 +44,7 @@ import java.util.LinkedList;
 public class NotificationPlayer implements OnCompletionListener, OnErrorListener {
     private static final int PLAY = 1;
     private static final int STOP = 2;
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = Build.IS_ENG;
 
     private static final class Command {
         int code;
