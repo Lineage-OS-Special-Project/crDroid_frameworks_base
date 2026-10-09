@@ -20,6 +20,7 @@ import android.annotation.Nullable;
 import android.compat.annotation.UnsupportedAppUsage;
 import android.net.sntp.Duration64;
 import android.net.sntp.Timestamp64;
+import android.os.Build;
 import android.os.SystemClock;
 import android.util.Log;
 import android.util.Slog;
@@ -56,7 +57,7 @@ import java.util.function.Supplier;
  */
 public class SntpClient {
     private static final String TAG = "SntpClient";
-    private static final boolean DBG = true;
+    private static final boolean DBG = Build.IS_ENG;
 
     private static final int REFERENCE_TIME_OFFSET = 16;
     private static final int ORIGINATE_TIME_OFFSET = 24;
