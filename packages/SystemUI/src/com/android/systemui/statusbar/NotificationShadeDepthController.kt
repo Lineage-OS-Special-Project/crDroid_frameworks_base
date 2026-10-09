@@ -369,7 +369,6 @@ constructor(
 
     private fun onZoomOutChanged(zoomOutFromShadeRadius: Float) {
         TrackTracer.instantForGroup("shade", "zoom_out", zoomOutFromShadeRadius)
-        Log.v(TAG, "onZoomOutChanged $zoomOutFromShadeRadius")
         keyguardInteractor.setZoomOut(zoomOutFromShadeRadius)
     }
 
