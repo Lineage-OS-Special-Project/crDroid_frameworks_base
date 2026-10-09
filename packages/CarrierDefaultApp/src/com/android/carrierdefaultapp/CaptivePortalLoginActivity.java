@@ -33,6 +33,7 @@ import android.net.Proxy;
 import android.net.TrafficStats;
 import android.net.Uri;
 import android.net.http.SslError;
+import android.os.Build;
 import android.os.Bundle;
 import android.telephony.CarrierConfigManager;
 import android.telephony.SubscriptionManager;
@@ -69,7 +70,7 @@ import java.util.Random;
  */
 public class CaptivePortalLoginActivity extends Activity {
     private static final String TAG = CaptivePortalLoginActivity.class.getSimpleName();
-    private static final boolean DBG = true;
+    private static final boolean DBG = Build.IS_ENG;
 
     private static final int SOCKET_TIMEOUT_MS = 10 * 1000;
     private static final int NETWORK_REQUEST_TIMEOUT_MS = 5 * 1000;

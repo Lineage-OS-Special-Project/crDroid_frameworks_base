@@ -18,6 +18,7 @@ package com.android.internal.util;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -35,7 +36,7 @@ import android.util.Log;
 abstract public class AsyncService extends Service {
     private static final String TAG = "AsyncService";
 
-    protected static final boolean DBG = true;
+    protected static final boolean DBG = "eng".equals(Build.TYPE);
 
     /** The command sent when a onStartCommand is invoked */
     public static final int CMD_ASYNC_SERVICE_ON_START_INTENT = IBinder.LAST_CALL_TRANSACTION;
