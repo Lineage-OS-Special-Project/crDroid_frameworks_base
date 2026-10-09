@@ -21,6 +21,7 @@ import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.annotation.SystemApi;
 import android.net.LinkProperties;
+import android.os.Build;
 import android.os.RemoteException;
 import android.telephony.data.DataService.DataServiceProvider;
 
@@ -42,7 +43,7 @@ public class DataServiceCallback {
 
     private static final String TAG = DataServiceCallback.class.getSimpleName();
 
-    private static final boolean DBG = true;
+    private static final boolean DBG = Build.IS_ENG;
 
     /**
      * Result of data requests

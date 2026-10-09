@@ -18,6 +18,7 @@ package com.android.systemui.media.controls.domain.pipeline
 
 import android.content.Context
 import android.content.pm.UserInfo
+import android.os.Build
 import android.util.Log
 import com.android.internal.annotations.KeepForWeakReference
 import com.android.internal.annotations.VisibleForTesting
@@ -33,7 +34,7 @@ import java.util.concurrent.Executor
 import javax.inject.Inject
 
 private const val TAG = "MediaDataFilter"
-private const val DEBUG = true
+private val DEBUG = Build.IS_ENG
 
 /**
  * Filters data updates from [MediaDataCombineLatest] based on the current user ID, and handles user
