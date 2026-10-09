@@ -16,6 +16,8 @@
 
 #include "Log.h"
 
+#include <android-base/properties.h>
+
 #include "incidentd_util.h"
 #include "proto_util.h"
 #include "PrivacyFilter.h"
@@ -569,7 +571,7 @@ sp<ReportFile> WorkDirectory::createReportFile() {
 status_t WorkDirectory::getReports(vector<sp<ReportFile>>* result, int64_t after) {
     unique_lock<mutex> lock(mLock);
 
-    const bool DBG = true;
+    const bool DBG = android::base::GetProperty("ro.build.type", "") == "eng";
 
     if (DBG) {
         ALOGD("WorkDirectory::getReports");

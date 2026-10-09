@@ -19,6 +19,7 @@ package com.android.settingslib.bluetooth.hearingdevices.metrics;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.IntDef;
@@ -50,7 +51,7 @@ import java.util.stream.Collectors;
 public final class HearingDeviceStatsLogUtils {
 
     private static final String TAG = "HearingAidStatsLogUtils";
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = Build.IS_ENG;
     private static final String ACCESSIBILITY_PREFERENCE = "accessibility_prefs";
 
     private static final String BT_LE_HEARING_PAIRED_HISTORY =
