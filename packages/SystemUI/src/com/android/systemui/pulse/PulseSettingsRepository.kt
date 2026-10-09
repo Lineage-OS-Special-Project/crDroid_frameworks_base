@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2025 The AxionAOSP Project
- *           (C) 2025-2026 crDroid Android Project
+ *           (C) 2025-2026 LOSP Android Project
  *           (C) 2025-2026 Lunaris AOSP
  *
  * Licensed under the Apache License, Version 2.0 (the "License");

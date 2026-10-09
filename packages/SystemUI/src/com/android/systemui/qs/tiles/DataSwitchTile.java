@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020-2026 crDroid Android Project
+ * Copyright (C) 2020-2026 Lineage OS Special Project (LOSP)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -241,7 +241,7 @@ public class DataSwitchTile extends QSTileImpl<BooleanState> {
 
     @Override
     public int getMetricsCategory() {
-        return MetricsEvent.CRDROID_SETTINGS;
+        return MetricsEvent.LOSP_MODCENTER;
     }
 
     /**

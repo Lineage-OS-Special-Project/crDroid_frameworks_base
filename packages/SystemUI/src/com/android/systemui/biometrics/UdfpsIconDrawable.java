@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024-2025 crDroid Android Project
+ * Copyright (C) 2024-2025 Lineage OS Special Project (LOSP)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 
-import com.android.internal.util.crdroid.Utils;
+import com.android.internal.util.losp.Utils;
 import com.android.systemui.res.R;
 
 /**
@@ -43,7 +43,7 @@ import com.android.systemui.res.R;
  */
 public abstract class UdfpsIconDrawable extends Drawable {
 
-    private final String udfpsResourcesPackage = "com.crdroid.udfps.icons";
+    private final String udfpsResourcesPackage = "com.losp.udfps.icons";
 
     @NonNull private final Context mContext;
     private Drawable mUdfpsDrawable;
