@@ -17,7 +17,7 @@
 * -->
 */
 
-package com.android.internal.util.crdroid;
+package com.android.internal.util.losp;
 
 import android.app.ActivityManager;
 import android.content.Context;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 crDroid Android Project
+ * Copyright 2026 LOSP Android Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
