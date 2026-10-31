@@ -1,6 +1,6 @@
 /*
  *  Copyright (C) 2015 The OmniROM Project
- *  Copyright (C) 2026 crDroid Android Project
+ *  Copyright (C) 2026 Lineage OS Special Project (LOSP)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
  *
  */
 
-package com.android.systemui.crdroid.header;
+package com.android.systemui.losp.header;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -73,7 +73,7 @@ public class StatusBarHeaderMachine {
 
     // broadcast providers sent when they update the header image
     public static final String STATUS_BAR_HEADER_UPDATE_ACTION =
-            "com.android.systemui.crdroid.header.STATUS_BAR_HEADER_UPDATE";
+            "com.android.systemui.losp.header.STATUS_BAR_HEADER_UPDATE";
 
     private static HandlerThread sThread;
 
