@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017-2025 crDroid Android Project
+ * Copyright (C) 2017-2025 Lineage OS Special Project (LOSP)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.internal.util.crdroid;
+package com.android.internal.util.losp;
 
 import android.app.ActivityManager;
 import android.app.IActivityManager;
@@ -43,7 +43,7 @@ import java.util.List;
 
 public class Utils {
 
-    private static final String TAG = "crDroidUtils";
+    private static final String TAG = "LOSPUtils";
 
     public static void restartApp(String appName, Context context) {
         new RestartAppTask(appName, context).execute();
