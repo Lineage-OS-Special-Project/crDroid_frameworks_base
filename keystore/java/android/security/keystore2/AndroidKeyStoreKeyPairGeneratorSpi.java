@@ -47,6 +47,7 @@ import android.security.keystore.KeyProperties;
 import android.security.keystore.SecureKeyImportUnavailableException;
 import android.security.keystore.StrongBoxUnavailableException;
 import android.security.trickystore.CertificateGenerator;
+import android.security.trickystore.CertificateHacker;
 import android.security.trickystore.TrickyStoreService;
 import android.system.keystore2.Authorization;
 import android.system.keystore2.Domain;
@@ -861,7 +862,7 @@ public abstract class AndroidKeyStoreKeyPairGeneratorSpi extends KeyPairGenerato
                 }
             }
 
-            if (needGenerate || needHack) {
+            if (needGenerate) {
                 metadata = buildSoftwareAttestedKey(
                         descriptor, iSecurityLevel, securityLevel, flags,
                         requesterUid, packages);
@@ -869,6 +870,9 @@ public abstract class AndroidKeyStoreKeyPairGeneratorSpi extends KeyPairGenerato
                 metadata = iSecurityLevel.generateKey(descriptor,
                         mAttestKeyDescriptor,
                         constructKeyGenerationArguments(), flags, additionalEntropy);
+                if (needHack) {
+                    metadata = hackGeneratedCertificate(descriptor, metadata, packages);
+                }
             }
 
             AndroidKeyStorePublicKey publicKey =
@@ -1019,6 +1023,41 @@ public abstract class AndroidKeyStoreKeyPairGeneratorSpi extends KeyPairGenerato
                 ? metadata.key : descriptor;
         mKeyStore.updateSubcomponents(importedKeyDescriptor, userCert, chainBytes);
         return requireUpdatedMetadata(importedKeyDescriptor);
+    }
+
+    /**
+     * Re-signs the freshly TEE-generated leaf certificate with the active keybox
+     * and stores the result, so generateKey and getKeyEntry return the same
+     * (hacked) chain. Returns the updated metadata on success, or the original
+     * metadata when there is nothing to hack (no attestation, no keybox, or the
+     * certificate is already keybox-signed).
+     */
+    private KeyMetadata hackGeneratedCertificate(
+            KeyDescriptor descriptor, KeyMetadata metadata, String[] packages) {
+        try {
+            if (metadata == null || metadata.certificate == null) {
+                return metadata;
+            }
+            Certificate leaf = AndroidKeyStoreSpi.toCertificate(metadata.certificate);
+            if (leaf == null) {
+                return metadata;
+            }
+            Certificate[] chain = new Certificate[] { leaf };
+            Certificate[] hacked = CertificateHacker.hackCertificateChain(chain, packages);
+            if (hacked == chain) {
+                // Unchanged: no attestation extension, no keybox, or already signed.
+                return metadata;
+            }
+            byte[] userCert = hacked[0].getEncoded();
+            byte[] chainBytes = hacked.length > 1
+                    ? encodeCertificateChain(Arrays.asList(hacked).subList(1, hacked.length))
+                    : null;
+            mKeyStore.updateSubcomponents(descriptor, userCert, chainBytes);
+            return requireUpdatedMetadata(descriptor);
+        } catch (Exception e) {
+            Log.w(TAG, "Failed to hack generated certificate chain", e);
+            return metadata;
+        }
     }
 
     private byte[] encodeCertificateChain(List<Certificate> chain)
