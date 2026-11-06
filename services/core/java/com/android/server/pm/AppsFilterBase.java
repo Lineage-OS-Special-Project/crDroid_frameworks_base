@@ -379,7 +379,7 @@ public abstract class AppsFilterBase implements AppsFilterSnapshot {
             "com.android.axion.",
             "com.axion.",
             "com.libremobileos.",
-            "com.crdroid.",
+            "com.losp.",
             "io.chaldeaprjkt.",
             "org.lunaris."
     };

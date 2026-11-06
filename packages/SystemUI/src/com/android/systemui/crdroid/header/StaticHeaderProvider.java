@@ -1,6 +1,6 @@
 /*
  *  Copyright (C) 2017 The OmniROM Project
- *  Copyright (C) 2026 crDroid Android Project
+ *  Copyright (C) 2026 Lineage OS Special Project (LOSP)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
  *
  */
 
-package com.android.systemui.crdroid.header;
+package com.android.systemui.losp.header;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -31,7 +31,7 @@ import android.util.Log;
 import java.util.Calendar;
 import java.util.Objects;
 
-import com.android.internal.util.crdroid.Utils;
+import com.android.internal.util.losp.Utils;
 
 public class StaticHeaderProvider implements
         StatusBarHeaderMachine.IStatusBarHeaderProvider {

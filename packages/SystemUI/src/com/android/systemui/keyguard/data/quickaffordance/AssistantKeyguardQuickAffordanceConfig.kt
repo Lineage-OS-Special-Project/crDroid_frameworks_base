@@ -31,7 +31,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
-import com.android.internal.util.crdroid.Utils
+import com.android.internal.util.losp.Utils
 
 @SysUISingleton
 class AssistantKeyguardQuickAffordanceConfig

@@ -1,0 +1,609 @@
+From eb72341fb163a5e288310824163518219d22df9b Mon Sep 17 00:00:00 2001
+From: yehonatan5785 <yehonatan@mail.ru>
+Date: Fri, 2 Oct 2026 11:15:38 +0100
+Subject: [PATCH] base: reduce unnecessary debug and log spam, part 2
+
+Backport the Android 17 log-spam cleanup to Android 16.
+
+Disable or gate routine debug and verbose logging across frameworks/base,
+SystemUI, media, telephony, wallpaper, Bluetooth, sensors, navigation,
+incidentd, and related framework components.
+
+Preserve meaningful warnings, errors, security diagnostics, crash
+reporting, hardware failures, timeouts, tracing, blur behaviour, and
+functional runtime behaviour.
+
+Skip Android 17-only code paths that are not present in the Android 16
+framework implementation.
+
+Signed-off-by: yehonatan5785 <yehonatan@mail.ru>
+---
+ cmds/incidentd/src/WorkDirectory.cpp                 |  3 +--
+ core/java/android/hardware/SystemSensorManager.java  |  2 +-
+ .../inputmethodservice/navigationbar/DeadZone.java   |  2 +-
+ core/java/android/net/SntpClient.java                |  2 +-
+ .../java/com/android/internal/util/AsyncService.java |  2 +-
+ media/java/android/media/MediaRouter.java            |  2 +-
+ .../CaptivePortalLoginActivity.java                  |  2 +-
+ .../bluetooth/CsipSetCoordinatorProfile.java         |  2 +-
+ .../bluetooth/hearingdevices/PresetController.kt     |  8 ++++----
+ .../metrics/HearingDeviceLocalDataManager.java       |  7 +++++--
+ .../metrics/HearingDeviceStatsLogUtils.java          |  2 +-
+ .../hearingdevices/ui/AmbientVolumeUiController.java |  2 +-
+ .../hearingdevices/ui/PresetUiController.kt          |  4 ++--
+ .../plugins/keyguard/data/model/WeatherData.kt       |  2 +-
+ .../controller/ControlsProviderLifecycleManager.kt   |  2 +-
+ .../android/systemui/media/NotificationPlayer.java   |  4 ++--
+ .../domain/pipeline/LegacyMediaDataFilterImpl.kt     |  2 +-
+ .../domain/pipeline/LegacyMediaDataManagerImpl.kt    | 12 ++++++------
+ .../controls/domain/pipeline/MediaDataFilterImpl.kt  |  2 +-
+ .../controls/domain/pipeline/MediaDataProcessor.kt   | 12 ++++++------
+ .../controls/domain/pipeline/MediaDeviceManager.kt   |  2 +-
+ .../navigationbar/NavigationModeController.java      |  2 +-
+ .../statusbar/NotificationShadeDepthController.kt    |  1 -
+ .../statusbar/policy/FlashlightControllerImpl.java   |  2 +-
+ .../data/repository/WallpaperRepository.kt           |  2 +-
+ .../location/contexthub/NanoAppStateManager.java     |  2 +-
+ .../android/server/media/MediaSessionService.java    |  3 +--
+ .../notification/ScheduleConditionProvider.java      |  2 +-
+ .../android/server/wallpaper/WallpaperCropper.java   |  8 +++++---
+ .../server/wallpaper/WallpaperManagerService.java    |  2 +-
+ .../android/telephony/data/DataServiceCallback.java  |  2 +-
+ 31 files changed, 53 insertions(+), 51 deletions(-)
+
+diff --git a/cmds/incidentd/src/WorkDirectory.cpp b/cmds/incidentd/src/WorkDirectory.cpp
+index 5c5d5f4b52e5..2103b2d3f661 100644
+--- a/cmds/incidentd/src/WorkDirectory.cpp
++++ b/cmds/incidentd/src/WorkDirectory.cpp
+@@ -569,7 +569,7 @@ sp<ReportFile> WorkDirectory::createReportFile() {
+ status_t WorkDirectory::getReports(vector<sp<ReportFile>>* result, int64_t after) {
+     unique_lock<mutex> lock(mLock);
+ 
+-    const bool DBG = true;
++    const bool DBG = false;
+ 
+     if (DBG) {
+         ALOGD("WorkDirectory::getReports");
+@@ -872,4 +872,3 @@ void get_args_from_report(IncidentReportArgs* out, const ReportFileProto_Report&
+ }  // namespace incidentd
+ }  // namespace os
+ }  // namespace android
+-
+diff --git a/core/java/android/hardware/SystemSensorManager.java b/core/java/android/hardware/SystemSensorManager.java
+index 1c14f12dbab6..678b73c54ea9 100644
+--- a/core/java/android/hardware/SystemSensorManager.java
++++ b/core/java/android/hardware/SystemSensorManager.java
+@@ -72,7 +72,7 @@ import java.util.concurrent.ConcurrentHashMap;
+  */
+ public class SystemSensorManager extends SensorManager {
+     //TODO: disable extra logging before release
+-    private static final boolean DEBUG_DYNAMIC_SENSOR = true;
++    private static final boolean DEBUG_DYNAMIC_SENSOR = false;
+     private static final int MIN_DIRECT_CHANNEL_BUFFER_SIZE = 104;
+     private static final int MAX_LISTENER_COUNT = 128;
+     private static final int CAPPED_SAMPLING_PERIOD_US = 5000;
+diff --git a/core/java/android/inputmethodservice/navigationbar/DeadZone.java b/core/java/android/inputmethodservice/navigationbar/DeadZone.java
+index cfe66b42b008..3a351c43a6ec 100644
+--- a/core/java/android/inputmethodservice/navigationbar/DeadZone.java
++++ b/core/java/android/inputmethodservice/navigationbar/DeadZone.java
+@@ -47,7 +47,7 @@ final class DeadZone {
+     public static final int HORIZONTAL = 0;  // Consume taps along the top edge.
+     public static final int VERTICAL = 1;  // Consume taps along the left edge.
+ 
+-    private static final boolean CHATTY = true; // print to logcat when we eat a click
++    private static final boolean CHATTY = false; // print to logcat when we eat a click
+ 
+     private static final FloatProperty<DeadZone> FLASH_PROPERTY =
+             new FloatProperty<DeadZone>("DeadZoneFlash") {
+diff --git a/core/java/android/net/SntpClient.java b/core/java/android/net/SntpClient.java
+index 0fb04b9d7299..579729982155 100644
+--- a/core/java/android/net/SntpClient.java
++++ b/core/java/android/net/SntpClient.java
+@@ -56,7 +56,7 @@ import java.util.function.Supplier;
+  */
+ public class SntpClient {
+     private static final String TAG = "SntpClient";
+-    private static final boolean DBG = true;
++    private static final boolean DBG = false;
+ 
+     private static final int REFERENCE_TIME_OFFSET = 16;
+     private static final int ORIGINATE_TIME_OFFSET = 24;
+diff --git a/core/java/com/android/internal/util/AsyncService.java b/core/java/com/android/internal/util/AsyncService.java
+index 58e4a605f88c..44da8bbf9d2d 100644
+--- a/core/java/com/android/internal/util/AsyncService.java
++++ b/core/java/com/android/internal/util/AsyncService.java
+@@ -35,7 +35,7 @@ import android.util.Log;
+ abstract public class AsyncService extends Service {
+     private static final String TAG = "AsyncService";
+ 
+-    protected static final boolean DBG = true;
++    protected static final boolean DBG = false;
+ 
+     /** The command sent when a onStartCommand is invoked */
+     public static final int CMD_ASYNC_SERVICE_ON_START_INTENT = IBinder.LAST_CALL_TRANSACTION;
+diff --git a/media/java/android/media/MediaRouter.java b/media/java/android/media/MediaRouter.java
+index 6e0821f9f89b..52bffcb00ff2 100644
+--- a/media/java/android/media/MediaRouter.java
++++ b/media/java/android/media/MediaRouter.java
+@@ -79,7 +79,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
+ public class MediaRouter {
+     private static final String TAG = "MediaRouter";
+     private static final boolean DEBUG = Log.isLoggable(TAG, Log.DEBUG);
+-    private static final boolean DEBUG_RESTORE_ROUTE = true;
++    private static final boolean DEBUG_RESTORE_ROUTE = false;
+ 
+     static class Static implements DisplayManager.DisplayListener {
+         final String mPackageName;
+diff --git a/packages/CarrierDefaultApp/src/com/android/carrierdefaultapp/CaptivePortalLoginActivity.java b/packages/CarrierDefaultApp/src/com/android/carrierdefaultapp/CaptivePortalLoginActivity.java
+index 10d68ba8d583..5c20ec4602bf 100644
+--- a/packages/CarrierDefaultApp/src/com/android/carrierdefaultapp/CaptivePortalLoginActivity.java
++++ b/packages/CarrierDefaultApp/src/com/android/carrierdefaultapp/CaptivePortalLoginActivity.java
+@@ -68,7 +68,7 @@ import java.util.Random;
+  */
+ public class CaptivePortalLoginActivity extends Activity {
+     private static final String TAG = CaptivePortalLoginActivity.class.getSimpleName();
+-    private static final boolean DBG = true;
++    private static final boolean DBG = false;
+ 
+     private static final int SOCKET_TIMEOUT_MS = 10 * 1000;
+     private static final int NETWORK_REQUEST_TIMEOUT_MS = 5 * 1000;
+diff --git a/packages/SettingsLib/src/com/android/settingslib/bluetooth/CsipSetCoordinatorProfile.java b/packages/SettingsLib/src/com/android/settingslib/bluetooth/CsipSetCoordinatorProfile.java
+index 45cafc6bf6cb..67fd2b3563fb 100644
+--- a/packages/SettingsLib/src/com/android/settingslib/bluetooth/CsipSetCoordinatorProfile.java
++++ b/packages/SettingsLib/src/com/android/settingslib/bluetooth/CsipSetCoordinatorProfile.java
+@@ -42,7 +42,7 @@ import java.util.Map;
+  */
+ public class CsipSetCoordinatorProfile implements LocalBluetoothProfile {
+     private static final String TAG = "CsipSetCoordinatorProfile";
+-    private static final boolean VDBG = true;
++    private static final boolean VDBG = false;
+ 
+     private Context mContext;
+ 
+diff --git a/packages/SettingsLib/src/com/android/settingslib/bluetooth/hearingdevices/PresetController.kt b/packages/SettingsLib/src/com/android/settingslib/bluetooth/hearingdevices/PresetController.kt
+index 6dbe024baa62..079bd0ad7457 100644
+--- a/packages/SettingsLib/src/com/android/settingslib/bluetooth/hearingdevices/PresetController.kt
++++ b/packages/SettingsLib/src/com/android/settingslib/bluetooth/hearingdevices/PresetController.kt
+@@ -70,7 +70,7 @@ class PresetController(
+             hapClientProfile?.registerCallback(executor, remoteCallback)
+         } catch (e: IllegalArgumentException) {
+             // The callback was already registered
+-            Log.i(TAG, "Skip registering the callback, ${e.message}")
++            if (DEBUG) Log.d(TAG, "Skip registering the callback, ${e.message}")
+         }
+     }
+ 
+@@ -82,7 +82,7 @@ class PresetController(
+             hapClientProfile?.unregisterCallback(remoteCallback)
+         } catch (e: IllegalArgumentException) {
+             // The callback was never registered or was already unregistered
+-            Log.w(TAG, "Cannot unregister callback, ${e.message}")
++            if (DEBUG) Log.d(TAG, "Cannot unregister callback, ${e.message}")
+         }
+     }
+ 
+@@ -263,7 +263,7 @@ class PresetController(
+     }
+ 
+     companion object {
+-        private const val DEBUG = true
++        private const val DEBUG = false
+         private const val TAG = "PresetController"
+     }
+-}
+\ No newline at end of file
++}
+diff --git a/packages/SettingsLib/src/com/android/settingslib/bluetooth/hearingdevices/metrics/HearingDeviceLocalDataManager.java b/packages/SettingsLib/src/com/android/settingslib/bluetooth/hearingdevices/metrics/HearingDeviceLocalDataManager.java
+index f78d91a061a7..afc24f2fed78 100644
+--- a/packages/SettingsLib/src/com/android/settingslib/bluetooth/hearingdevices/metrics/HearingDeviceLocalDataManager.java
++++ b/packages/SettingsLib/src/com/android/settingslib/bluetooth/hearingdevices/metrics/HearingDeviceLocalDataManager.java
+@@ -51,7 +51,7 @@ import java.util.concurrent.Executor;
+  */
+ public class HearingDeviceLocalDataManager {
+     private static final String TAG = "HearingDeviceDataMgr";
+-    private static final boolean DEBUG = true;
++    private static final boolean DEBUG = false;
+ 
+     /** Interface for listening hearing device local data changed */
+     public interface OnDeviceLocalDataChangeListener {
+@@ -357,7 +357,10 @@ public class HearingDeviceLocalDataManager {
+         @Override
+         public void onChange(boolean selfChange, @Nullable Uri uri) {
+             if (mAmbientVolumeUri.equals(uri)) {
+-                Log.v(TAG, "Local data on change, manager: " + HearingDeviceLocalDataManager.this);
++                if (DEBUG) {
++                    Log.v(TAG, "Local data on change, manager: "
++                            + HearingDeviceLocalDataManager.this);
++                }
+                 getLocalDataFromSettings();
+             }
+         }
+diff --git a/packages/SettingsLib/src/com/android/settingslib/bluetooth/hearingdevices/metrics/HearingDeviceStatsLogUtils.java b/packages/SettingsLib/src/com/android/settingslib/bluetooth/hearingdevices/metrics/HearingDeviceStatsLogUtils.java
+index 4d6e106471db..c39ea3726d12 100644
+--- a/packages/SettingsLib/src/com/android/settingslib/bluetooth/hearingdevices/metrics/HearingDeviceStatsLogUtils.java
++++ b/packages/SettingsLib/src/com/android/settingslib/bluetooth/hearingdevices/metrics/HearingDeviceStatsLogUtils.java
+@@ -50,7 +50,7 @@ import java.util.stream.Collectors;
+ public final class HearingDeviceStatsLogUtils {
+ 
+     private static final String TAG = "HearingAidStatsLogUtils";
+-    private static final boolean DEBUG = true;
++    private static final boolean DEBUG = false;
+     private static final String ACCESSIBILITY_PREFERENCE = "accessibility_prefs";
+ 
+     private static final String BT_LE_HEARING_PAIRED_HISTORY =
+diff --git a/packages/SettingsLib/src/com/android/settingslib/bluetooth/hearingdevices/ui/AmbientVolumeUiController.java b/packages/SettingsLib/src/com/android/settingslib/bluetooth/hearingdevices/ui/AmbientVolumeUiController.java
+index e5787a03aed3..366e965fc8f0 100644
+--- a/packages/SettingsLib/src/com/android/settingslib/bluetooth/hearingdevices/ui/AmbientVolumeUiController.java
++++ b/packages/SettingsLib/src/com/android/settingslib/bluetooth/hearingdevices/ui/AmbientVolumeUiController.java
+@@ -61,7 +61,7 @@ public class AmbientVolumeUiController implements
+         AmbientVolumeController.AmbientVolumeControlCallback,
+         AmbientVolumeUi.AmbientVolumeUiListener, BluetoothCallback, CachedBluetoothDevice.Callback {
+ 
+-    private static final boolean DEBUG = true;
++    private static final boolean DEBUG = false;
+     private static final String TAG = "AmbientVolumeUiController";
+ 
+     private final Context mContext;
+diff --git a/packages/SettingsLib/src/com/android/settingslib/bluetooth/hearingdevices/ui/PresetUiController.kt b/packages/SettingsLib/src/com/android/settingslib/bluetooth/hearingdevices/ui/PresetUiController.kt
+index 36ac4f52f81d..730e1fa71e88 100644
+--- a/packages/SettingsLib/src/com/android/settingslib/bluetooth/hearingdevices/ui/PresetUiController.kt
++++ b/packages/SettingsLib/src/com/android/settingslib/bluetooth/hearingdevices/ui/PresetUiController.kt
+@@ -319,7 +319,7 @@ class PresetUiController(
+     }
+ 
+     companion object {
+-        private const val DEBUG = true
++        private const val DEBUG = false
+         private const val TAG = "PresetUiController"
+     }
+-}
+\ No newline at end of file
++}
+diff --git a/packages/SystemUI/plugin/src/com/android/systemui/plugins/keyguard/data/model/WeatherData.kt b/packages/SystemUI/plugin/src/com/android/systemui/plugins/keyguard/data/model/WeatherData.kt
+index 6dece415d9ea..e66db84f5c24 100644
+--- a/packages/SystemUI/plugin/src/com/android/systemui/plugins/keyguard/data/model/WeatherData.kt
++++ b/packages/SystemUI/plugin/src/com/android/systemui/plugins/keyguard/data/model/WeatherData.kt
+@@ -30,7 +30,7 @@ data class WeatherData(
+     val touchAction: WeatherTouchAction? = null,
+ ) {
+     companion object {
+-        const val DEBUG = true
++        const val DEBUG = false
+         private const val TAG = "WeatherData"
+         @VisibleForTesting const val DESCRIPTION_KEY = "description"
+         @VisibleForTesting const val STATE_KEY = "state"
+diff --git a/packages/SystemUI/src/com/android/systemui/controls/controller/ControlsProviderLifecycleManager.kt b/packages/SystemUI/src/com/android/systemui/controls/controller/ControlsProviderLifecycleManager.kt
+index cb2476ce0ebf..d4b6405964b4 100644
+--- a/packages/SystemUI/src/com/android/systemui/controls/controller/ControlsProviderLifecycleManager.kt
++++ b/packages/SystemUI/src/com/android/systemui/controls/controller/ControlsProviderLifecycleManager.kt
+@@ -79,7 +79,7 @@ class ControlsProviderLifecycleManager(
+ 
+     companion object {
+         private const val LOAD_TIMEOUT_SECONDS = 20L // seconds
+-        private const val DEBUG = true
++        private const val DEBUG = false
+         private val BIND_FLAGS = Context.BIND_AUTO_CREATE or Context.BIND_FOREGROUND_SERVICE or
+             Context.BIND_NOT_PERCEPTIBLE
+         // Use BIND_NOT_PERCEPTIBLE so it will be at lower priority from SystemUI.
+diff --git a/packages/SystemUI/src/com/android/systemui/media/NotificationPlayer.java b/packages/SystemUI/src/com/android/systemui/media/NotificationPlayer.java
+index 18a04ec60d56..766acc4eb9c3 100644
+--- a/packages/SystemUI/src/com/android/systemui/media/NotificationPlayer.java
++++ b/packages/SystemUI/src/com/android/systemui/media/NotificationPlayer.java
+@@ -43,7 +43,7 @@ import java.util.LinkedList;
+ public class NotificationPlayer implements OnCompletionListener, OnErrorListener {
+     private static final int PLAY = 1;
+     private static final int STOP = 2;
+-    private static final boolean DEBUG = true;
++    private static final boolean DEBUG = false;
+ 
+     private static final class Command {
+         int code;
+@@ -225,7 +225,7 @@ public class NotificationPlayer implements OnCompletionListener, OnErrorListener
+             mPlayer = null;
+         }
+         if (mp == null) {
+-            Log.w(mTag, "STOP command without a player");
++            if (DEBUG) Log.d(mTag, "STOP command without a player");
+             return;
+         }
+ 
+diff --git a/packages/SystemUI/src/com/android/systemui/media/controls/domain/pipeline/LegacyMediaDataFilterImpl.kt b/packages/SystemUI/src/com/android/systemui/media/controls/domain/pipeline/LegacyMediaDataFilterImpl.kt
+index 945e5557cae7..6df7ecb0e1ed 100644
+--- a/packages/SystemUI/src/com/android/systemui/media/controls/domain/pipeline/LegacyMediaDataFilterImpl.kt
++++ b/packages/SystemUI/src/com/android/systemui/media/controls/domain/pipeline/LegacyMediaDataFilterImpl.kt
+@@ -30,7 +30,7 @@ import javax.inject.Inject
+ import kotlin.collections.LinkedHashMap
+ 
+ private const val TAG = "MediaDataFilter"
+-private const val DEBUG = true
++private const val DEBUG = false
+ 
+ /**
+  * Filters data updates from [MediaDataCombineLatest] based on the current user ID, and handles user
+diff --git a/packages/SystemUI/src/com/android/systemui/media/controls/domain/pipeline/LegacyMediaDataManagerImpl.kt b/packages/SystemUI/src/com/android/systemui/media/controls/domain/pipeline/LegacyMediaDataManagerImpl.kt
+index a28e4f2639bf..532264e630ca 100644
+--- a/packages/SystemUI/src/com/android/systemui/media/controls/domain/pipeline/LegacyMediaDataManagerImpl.kt
++++ b/packages/SystemUI/src/com/android/systemui/media/controls/domain/pipeline/LegacyMediaDataManagerImpl.kt
+@@ -72,7 +72,7 @@ import kotlinx.coroutines.CoroutineScope
+ import kotlinx.coroutines.withContext
+ 
+ private const val TAG = "MediaDataManager"
+-private const val DEBUG = true
++private const val DEBUG = false
+ 
+ private val LOADING =
+     MediaData(
+@@ -319,7 +319,7 @@ class LegacyMediaDataManagerImpl(
+                 try {
+                     context.packageManager.getApplicationInfo(packageName, 0)?.uid!!
+                 } catch (e: PackageManager.NameNotFoundException) {
+-                    Log.w(TAG, "Could not get app UID for $packageName", e)
++                    if (DEBUG) Log.d(TAG, "Could not get app UID for $packageName", e)
+                     Process.INVALID_UID
+                 }
+ 
+@@ -380,7 +380,7 @@ class LegacyMediaDataManagerImpl(
+             val lastActive = getActiveTimestamp(systemClock)
+             val result = mediaDataLoader.get().loadMediaData(key, sbn, isConvertingToActive)
+             if (result == null) {
+-                Log.d(TAG, "No result from loadMediaData")
++                if (DEBUG) Log.d(TAG, "No result from loadMediaData")
+                 return@withContext
+             }
+ 
+@@ -610,7 +610,7 @@ class LegacyMediaDataManagerImpl(
+                         packageName,
+                     )
+             if (result == null || desc.title.isNullOrBlank()) {
+-                Log.d(TAG, "No MediaData result for resumption")
++                if (DEBUG) Log.d(TAG, "No MediaData result for resumption")
+                 mediaEntries.remove(packageName)
+                 return@withContext
+             }
+@@ -800,7 +800,7 @@ class LegacyMediaDataManagerImpl(
+         val pkg = data.packageName
+         val migrate = mediaEntries.put(pkg, updated) == null
+         // Notify listeners of "new" controls when migrating or removed and update when not
+-        Log.d(TAG, "migrating? $migrate from $key -> $pkg")
++        if (DEBUG) Log.d(TAG, "migrating? $migrate from $key -> $pkg")
+         if (migrate) {
+             notifyMediaDataLoaded(key = pkg, oldKey = key, info = updated)
+         } else {
+@@ -823,7 +823,7 @@ class LegacyMediaDataManagerImpl(
+                 .sortedBy { (key, data) -> data.lastActive }
+                 .subList(0, numResume - ResumeMediaBrowser.MAX_RESUMPTION_CONTROLS)
+                 .forEach { (key, data) ->
+-                    Log.d(TAG, "Removing excess control $key")
++                    if (DEBUG) Log.d(TAG, "Removing excess control $key")
+                     mediaEntries.remove(key)
+                     notifyMediaDataRemoved(key)
+                     logger.logMediaRemoved(data.appUid, data.packageName, data.instanceId)
+diff --git a/packages/SystemUI/src/com/android/systemui/media/controls/domain/pipeline/MediaDataFilterImpl.kt b/packages/SystemUI/src/com/android/systemui/media/controls/domain/pipeline/MediaDataFilterImpl.kt
+index b9143310dd6f..3ea75f54693e 100644
+--- a/packages/SystemUI/src/com/android/systemui/media/controls/domain/pipeline/MediaDataFilterImpl.kt
++++ b/packages/SystemUI/src/com/android/systemui/media/controls/domain/pipeline/MediaDataFilterImpl.kt
+@@ -33,7 +33,7 @@ import java.util.concurrent.Executor
+ import javax.inject.Inject
+ 
+ private const val TAG = "MediaDataFilter"
+-private const val DEBUG = true
++private const val DEBUG = false
+ 
+ /**
+  * Filters data updates from [MediaDataCombineLatest] based on the current user ID, and handles user
+diff --git a/packages/SystemUI/src/com/android/systemui/media/controls/domain/pipeline/MediaDataProcessor.kt b/packages/SystemUI/src/com/android/systemui/media/controls/domain/pipeline/MediaDataProcessor.kt
+index 27363ef1f7a7..c98ae886239d 100644
+--- a/packages/SystemUI/src/com/android/systemui/media/controls/domain/pipeline/MediaDataProcessor.kt
++++ b/packages/SystemUI/src/com/android/systemui/media/controls/domain/pipeline/MediaDataProcessor.kt
+@@ -74,7 +74,7 @@ import kotlinx.coroutines.CoroutineScope
+ import kotlinx.coroutines.withContext
+ 
+ private const val TAG = "MediaDataProcessor"
+-private const val DEBUG = true
++private const val DEBUG = false
+ 
+ /** Processes all media data fields and encapsulates logic for managing media data entries. */
+ @SysUISingleton
+@@ -270,7 +270,7 @@ class MediaDataProcessor(
+                 try {
+                     context.packageManager.getApplicationInfo(packageName, 0).uid
+                 } catch (e: PackageManager.NameNotFoundException) {
+-                    Log.w(TAG, "Could not get app UID for $packageName", e)
++                    if (DEBUG) Log.d(TAG, "Could not get app UID for $packageName", e)
+                     Process.INVALID_UID
+                 }
+ 
+@@ -481,7 +481,7 @@ class MediaDataProcessor(
+                         packageName,
+                     )
+             if (result == null || desc.title.isNullOrBlank()) {
+-                Log.d(TAG, "No MediaData result for resumption")
++                if (DEBUG) Log.d(TAG, "No MediaData result for resumption")
+                 mediaDataRepository.removeMediaEntry(packageName)
+                 return@withContext
+             }
+@@ -533,7 +533,7 @@ class MediaDataProcessor(
+             val lastActive = getActiveTimestamp(systemClock)
+             val result = mediaDataLoader.get().loadMediaData(key, sbn, isConvertingToActive)
+             if (result == null) {
+-                Log.d(TAG, "No result from loadMediaData")
++                if (DEBUG) Log.d(TAG, "No result from loadMediaData")
+                 return@withContext
+             }
+ 
+@@ -761,7 +761,7 @@ class MediaDataProcessor(
+         val pkg = data.packageName
+         val migrate = mediaDataRepository.addMediaEntry(pkg, updated) == null
+         // Notify listeners of "new" controls when migrating or removed and update when not
+-        Log.d(TAG, "migrating? $migrate from $key -> $pkg")
++        if (DEBUG) Log.d(TAG, "migrating? $migrate from $key -> $pkg")
+         if (migrate) {
+             notifyMediaDataLoaded(key = pkg, oldKey = key, info = updated)
+         } else {
+@@ -785,7 +785,7 @@ class MediaDataProcessor(
+                 .sortedBy { (_, data) -> data.lastActive }
+                 .subList(0, numResume - ResumeMediaBrowser.MAX_RESUMPTION_CONTROLS)
+                 .forEach { (key, data) ->
+-                    Log.d(TAG, "Removing excess control $key")
++                    if (DEBUG) Log.d(TAG, "Removing excess control $key")
+                     mediaDataRepository.removeMediaEntry(key)
+                     notifyMediaDataRemoved(key)
+                     logger.logMediaRemoved(data.appUid, data.packageName, data.instanceId)
+diff --git a/packages/SystemUI/src/com/android/systemui/media/controls/domain/pipeline/MediaDeviceManager.kt b/packages/SystemUI/src/com/android/systemui/media/controls/domain/pipeline/MediaDeviceManager.kt
+index d971d1065ffc..9c2c464dc406 100644
+--- a/packages/SystemUI/src/com/android/systemui/media/controls/domain/pipeline/MediaDeviceManager.kt
++++ b/packages/SystemUI/src/com/android/systemui/media/controls/domain/pipeline/MediaDeviceManager.kt
+@@ -59,7 +59,7 @@ import javax.inject.Inject
+ 
+ private const val PLAYBACK_TYPE_UNKNOWN = 0
+ private const val TAG = "MediaDeviceManager"
+-private const val DEBUG = true
++private const val DEBUG = false
+ 
+ /** Provides information about the route (ie. device) where playback is occurring. */
+ class MediaDeviceManager
+diff --git a/packages/SystemUI/src/com/android/systemui/navigationbar/NavigationModeController.java b/packages/SystemUI/src/com/android/systemui/navigationbar/NavigationModeController.java
+index 8938628c0fb6..71097376ee8d 100644
+--- a/packages/SystemUI/src/com/android/systemui/navigationbar/NavigationModeController.java
++++ b/packages/SystemUI/src/com/android/systemui/navigationbar/NavigationModeController.java
+@@ -58,7 +58,7 @@ import javax.inject.Inject;
+ public class NavigationModeController implements Dumpable {
+ 
+     private static final String TAG = NavigationModeController.class.getSimpleName();
+-    private static final boolean DEBUG = true;
++    private static final boolean DEBUG = false;
+ 
+     public interface ModeChangedListener {
+         void onNavigationModeChanged(int mode);
+diff --git a/packages/SystemUI/src/com/android/systemui/statusbar/NotificationShadeDepthController.kt b/packages/SystemUI/src/com/android/systemui/statusbar/NotificationShadeDepthController.kt
+index 2f9a499bf620..5a21aa447914 100644
+--- a/packages/SystemUI/src/com/android/systemui/statusbar/NotificationShadeDepthController.kt
++++ b/packages/SystemUI/src/com/android/systemui/statusbar/NotificationShadeDepthController.kt
+@@ -391,7 +391,6 @@ constructor(
+ 
+     private fun onZoomOutChanged(zoomOutFromShadeRadius: Float) {
+         TrackTracer.instantForGroup("shade", "zoom_out", zoomOutFromShadeRadius)
+-        Log.v(TAG, "onZoomOutChanged $zoomOutFromShadeRadius")
+         if (spatialModelAppPushback()) {
+             keyguardInteractor.setZoomOut(zoomOutFromShadeRadius)
+         }
+diff --git a/packages/SystemUI/src/com/android/systemui/statusbar/policy/FlashlightControllerImpl.java b/packages/SystemUI/src/com/android/systemui/statusbar/policy/FlashlightControllerImpl.java
+index 752a4a1f1315..8897a1fa35b0 100644
+--- a/packages/SystemUI/src/com/android/systemui/statusbar/policy/FlashlightControllerImpl.java
++++ b/packages/SystemUI/src/com/android/systemui/statusbar/policy/FlashlightControllerImpl.java
+@@ -55,7 +55,7 @@ import javax.inject.Inject;
+ public class FlashlightControllerImpl implements FlashlightController {
+ 
+     private static final String TAG = "FlashlightController";
+-    private static final boolean DEBUG = true;
++    private static final boolean DEBUG = false;
+ 
+     private static final int DISPATCH_ERROR = 0;
+     private static final int DISPATCH_CHANGED = 1;
+diff --git a/packages/SystemUI/src/com/android/systemui/wallpapers/data/repository/WallpaperRepository.kt b/packages/SystemUI/src/com/android/systemui/wallpapers/data/repository/WallpaperRepository.kt
+index 028fbc868503..945eec545a83 100644
+--- a/packages/SystemUI/src/com/android/systemui/wallpapers/data/repository/WallpaperRepository.kt
++++ b/packages/SystemUI/src/com/android/systemui/wallpapers/data/repository/WallpaperRepository.kt
+@@ -239,6 +239,6 @@ constructor(
+ 
+     companion object {
+         private val TAG = WallpaperRepositoryImpl::class.simpleName
+-        private val DEBUG = true
++        private val DEBUG = false
+     }
+ }
+diff --git a/services/core/java/com/android/server/location/contexthub/NanoAppStateManager.java b/services/core/java/com/android/server/location/contexthub/NanoAppStateManager.java
+index b6d5496ca547..d2ac454b857f 100644
+--- a/services/core/java/com/android/server/location/contexthub/NanoAppStateManager.java
++++ b/services/core/java/com/android/server/location/contexthub/NanoAppStateManager.java
+@@ -46,7 +46,7 @@ import java.util.function.Consumer;
+     /*
+      * Enables verbose debug logs for this class.
+      */
+-    private static final boolean ENABLE_LOG_DEBUG = true;
++    private static final boolean ENABLE_LOG_DEBUG = false;
+ 
+     /*
+      * Service cache maintaining of handle to nanoapp infos.
+diff --git a/services/core/java/com/android/server/media/MediaSessionService.java b/services/core/java/com/android/server/media/MediaSessionService.java
+index e1fbd577b7bd..b924ef61513d 100644
+--- a/services/core/java/com/android/server/media/MediaSessionService.java
++++ b/services/core/java/com/android/server/media/MediaSessionService.java
+@@ -117,8 +117,7 @@ import java.util.Set;
+ public class MediaSessionService extends SystemService implements Monitor {
+     private static final String TAG = "MediaSessionService";
+     static final boolean DEBUG = Log.isLoggable(TAG, Log.DEBUG);
+-    // Leave log for key event always.
+-    static final boolean DEBUG_KEY_EVENT = true;
++    static final boolean DEBUG_KEY_EVENT = DEBUG;
+ 
+     private static final int WAKELOCK_TIMEOUT = 5000;
+     private static final int MEDIA_KEY_LISTENER_TIMEOUT = 1000;
+diff --git a/services/core/java/com/android/server/notification/ScheduleConditionProvider.java b/services/core/java/com/android/server/notification/ScheduleConditionProvider.java
+index e704da73490e..ff162ee8278d 100644
+--- a/services/core/java/com/android/server/notification/ScheduleConditionProvider.java
++++ b/services/core/java/com/android/server/notification/ScheduleConditionProvider.java
+@@ -52,7 +52,7 @@ import java.util.List;
+  */
+ public class ScheduleConditionProvider extends SystemConditionProviderService {
+     static final String TAG = "ConditionProviders.SCP";
+-    static final boolean DEBUG = true || Log.isLoggable("ConditionProviders", Log.DEBUG);
++    static final boolean DEBUG = Log.isLoggable("ConditionProviders", Log.DEBUG);
+ 
+     private static final String NOT_SHOWN = "...";
+     private static final String SIMPLE_NAME = ScheduleConditionProvider.class.getSimpleName();
+diff --git a/services/core/java/com/android/server/wallpaper/WallpaperCropper.java b/services/core/java/com/android/server/wallpaper/WallpaperCropper.java
+index 57fb7e967da6..a2885c667b91 100644
+--- a/services/core/java/com/android/server/wallpaper/WallpaperCropper.java
++++ b/services/core/java/com/android/server/wallpaper/WallpaperCropper.java
+@@ -66,7 +66,7 @@ public class WallpaperCropper {
+ 
+     private static final String TAG = WallpaperCropper.class.getSimpleName();
+     private static final boolean DEBUG = false;
+-    private static final boolean DEBUG_CROP = true;
++    private static final boolean DEBUG_CROP = false;
+ 
+     /**
+      * Maximum acceptable parallax.
+@@ -783,8 +783,10 @@ public class WallpaperCropper {
+                                     ? RECORD_FILE : RECORD_LOCK_FILE);
+                     final File record = new File(getWallpaperDir(wallpaper.userId), recordName);
+                     record.createNewFile();
+-                    Slog.v(TAG, "record path =" + record.getPath()
+-                            + ", record name =" + record.getName());
++                    if (DEBUG_CROP) {
++                        Slog.v(TAG, "record path =" + record.getPath()
++                                + ", record name =" + record.getName());
++                    }
+ 
+                     final ImageDecoder.Source srcData =
+                             ImageDecoder.createSource(wallpaper.getWallpaperFile());
+diff --git a/services/core/java/com/android/server/wallpaper/WallpaperManagerService.java b/services/core/java/com/android/server/wallpaper/WallpaperManagerService.java
+index 8f5197193d37..cdda35fe4a34 100644
+--- a/services/core/java/com/android/server/wallpaper/WallpaperManagerService.java
++++ b/services/core/java/com/android/server/wallpaper/WallpaperManagerService.java
+@@ -165,7 +165,7 @@ public class WallpaperManagerService extends IWallpaperManager.Stub
+         implements IWallpaperManagerService {
+     private static final String TAG = "WallpaperManagerService";
+     private static final boolean DEBUG = false;
+-    private static final boolean DEBUG_LIVE = true;
++    private static final boolean DEBUG_LIVE = false;
+ 
+     private static final @NonNull RectF LOCAL_COLOR_BOUNDS =
+             new RectF(0, 0, 1, 1);
+diff --git a/telephony/java/android/telephony/data/DataServiceCallback.java b/telephony/java/android/telephony/data/DataServiceCallback.java
+index 8287a038c841..7910e59b16eb 100644
+--- a/telephony/java/android/telephony/data/DataServiceCallback.java
++++ b/telephony/java/android/telephony/data/DataServiceCallback.java
+@@ -42,7 +42,7 @@ public class DataServiceCallback {
+ 
+     private static final String TAG = DataServiceCallback.class.getSimpleName();
+ 
+-    private static final boolean DBG = true;
++    private static final boolean DBG = false;
+ 
+     /**
+      * Result of data requests
+-- 
+2.56.0
+
