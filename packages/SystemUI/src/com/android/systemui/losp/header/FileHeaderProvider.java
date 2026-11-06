@@ -1,6 +1,6 @@
 /*
  *  Copyright (C) 2018 The OmniROM Project
- *  Copyright (C) 2026 crDroid Android Project
+ *  Copyright (C) 2026 Lineage OS Special Project (LOSP)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
  *
  */
 
-package com.android.systemui.crdroid.header;
+package com.android.systemui.losp.header;
 
 import android.app.ActivityManager;
 import android.content.Context;

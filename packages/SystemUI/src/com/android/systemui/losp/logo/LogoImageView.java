@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2025 crDroid Android Project
+ * Copyright (C) 2018-2025 Lineage OS Special Project (LOSP)
  * Copyright (C) 2018-2019 AICP
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,28 +15,28 @@
  * limitations under the License.
  */
 
-package com.android.systemui.crdroid.logo;
+package com.android.systemui.losp.logo;
 
 import android.content.Context;
 import android.util.AttributeSet;
 
-public class LogoImageViewRight extends LogoImage {
+public class LogoImageView extends LogoImage {
 
-    public LogoImageViewRight(Context context) {
+    public LogoImageView(Context context) {
         this(context, null);
     }
 
-    public LogoImageViewRight(Context context, AttributeSet attrs) {
+    public LogoImageView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public LogoImageViewRight(Context context, AttributeSet attrs, int defStyle) {
+    public LogoImageView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 
     @Override
     protected boolean isLogoVisible() {
-        if (mLogoPosition == 1) {
+        if (mLogoPosition == 0) {
             return true;
         }
         return false;

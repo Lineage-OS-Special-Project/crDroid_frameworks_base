@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2017 The OmniROM project
- * Copyright (C) 2022-2025 crDroid Android project
+ * Copyright (C) 2022-2025 Lineage OS Special Project (LOSP)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,8 +32,8 @@ import androidx.annotation.Nullable;
 
 import com.android.internal.logging.MetricsLogger;
 import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
-import com.android.internal.util.crdroid.OmniJawsClient;
-import com.android.internal.util.crdroid.Utils;
+import com.android.internal.util.losp.OmniJawsClient;
+import com.android.internal.util.losp.Utils;
 import com.android.systemui.animation.Expandable;
 import com.android.systemui.dagger.qualifiers.Background;
 import com.android.systemui.dagger.qualifiers.Main;
@@ -89,7 +89,7 @@ public class WeatherTile extends QSTileImpl<BooleanState> implements OmniJawsCli
 
     @Override
     public int getMetricsCategory() {
-        return MetricsEvent.CRDROID_SETTINGS;
+        return MetricsEvent.LOSP_MODCENTER;
     }
 
     @Override
