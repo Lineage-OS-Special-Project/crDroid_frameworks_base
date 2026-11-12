@@ -1,6 +1,6 @@
 /*
  *  Copyright (C) 2015 The OmniROM Project
- *  Copyright (C) 2026 crDroid Android Project
+ *  Copyright (C) 2026 Lineage OS Special Project (LOSP)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
  *
  */
 
-package com.android.systemui.crdroid.header;
+package com.android.systemui.losp.header;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -45,7 +45,7 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import com.android.internal.util.crdroid.Utils;
+import com.android.internal.util.losp.Utils;
 
 public class DaylightHeaderProvider implements
         StatusBarHeaderMachine.IStatusBarHeaderProvider {

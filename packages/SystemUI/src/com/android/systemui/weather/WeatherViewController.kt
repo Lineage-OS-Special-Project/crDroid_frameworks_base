@@ -1,6 +1,6 @@
 /*
  * SPDX-FileCopyrightText: The AxionAOSP Project
- * SPDX-FileCopyrightText: crDroid Android Project
+ * SPDX-FileCopyrightText: Lineage OS Special Project (LOSP)
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -17,7 +17,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 
-import com.android.internal.util.crdroid.OmniJawsClient
+import com.android.internal.util.losp.OmniJawsClient
 
 import com.android.systemui.res.R
 
