@@ -3,12 +3,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package com.android.server.crdroid;
+package com.android.server.losp;
 
 import android.content.Context;
 import com.android.server.SystemService;
 
-import com.android.internal.util.crdroid.DeviceConfigUtils;
+import com.android.internal.util.losp.DeviceConfigUtils;
 
 public class CustomDeviceConfigService extends SystemService {
 

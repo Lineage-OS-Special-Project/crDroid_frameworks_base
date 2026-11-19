@@ -2,7 +2,7 @@
  * Copyright (C) 2012 The Android Open Source Project
  * Copyright (C) 2018 The Dirty Unicorns Project
  * Copyright (C) 2022 The Potato Open Sauce Project
- * Copyright (C) 2026 crDroid Android Project
+ * Copyright (C) 2026 Lineage OS Special Project (LOSP)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

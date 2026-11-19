@@ -2,7 +2,7 @@
 * Copyright (C) 2013 SlimRoms Project
 * Copyright (C) 2015 TeamEos Project
 * Copyright (C) 2015-2016 The DirtyUnicorns Project
-* Copyright (C) 2019-2025 crDroid Android Project
+* Copyright (C) 2019-2025 Lineage OS Special Project (LOSP)
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 * limitations under the License.
 */
 
-package com.android.internal.util.crdroid;
+package com.android.internal.util.losp;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
