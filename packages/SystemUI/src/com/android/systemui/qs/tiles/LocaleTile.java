@@ -142,7 +142,7 @@ public class LocaleTile extends QSTileImpl<State> {
 
     @Override
     public int getMetricsCategory() {
-        return MetricsEvent.CRDROID_SETTINGS;
+        return MetricsEvent.LOSP_MODCENTER;
     }
 
     @Override

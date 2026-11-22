@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2025 crDroid Android Project
+ * Copyright (C) 2018-2025 Lineage OS Special Project (LOSP)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.systemui.crdroid.batterybar;
+package com.android.systemui.losp.batterybar;
 
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;

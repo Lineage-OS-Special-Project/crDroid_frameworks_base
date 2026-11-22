@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 ShapeShiftOS
- *           (C) 2024-2025 crDroid Android Project
+ *           (C) 2024-2025 LOSP Android Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ import android.net.Uri;
 import android.os.Process;
 import android.os.UserHandle;
 
-import com.android.internal.util.crdroid.Utils;
+import com.android.internal.util.losp.Utils;
 
 import com.android.systemui.dagger.qualifiers.Background;
 import com.android.systemui.res.R;
